@@ -653,7 +653,14 @@ if(token){
   status.textContent = "Importando...";
 
   try{
-    const content = await input.files[0].text();
+    const content = await new Promise((resolve, reject) => {
+  const reader = new FileReader();
+
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = () => reject(reader.error);
+
+  reader.readAsText(input.files[0], "UTF-8");
+});
 
     const r = await api("/api/import-m3u", {
       method: "POST",
