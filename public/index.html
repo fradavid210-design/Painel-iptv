@@ -594,7 +594,7 @@ async function adicionarCanal(){
     alert(data.error||"Erro ao criar canal.");
     return;
   }
-
+  }
   document.getElementById("canalNome").value="";
   document.getElementById("canalCategoria").value="";
   document.getElementById("canalUrl").value="";
@@ -616,6 +616,7 @@ async function excluirCanal(id){
 
   if(r && r.ok){
     carregarTudo();
+  }
   }
 async function importarM3U(){
   const input = document.getElementById("arquivoM3U");
