@@ -679,7 +679,7 @@ if(token){
     carregarTudo();
 
   }catch(e){
-    status.textContent = "Erro ao ler o arquivo M3U.";
+      status.textContent = "Erro: " + (e.message || e);
   }
 }
 
