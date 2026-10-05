@@ -139,20 +139,46 @@
 
   </div>
 
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+ <script>
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-      const usuario = document.getElementById("usuario").value;
-      const senha = document.getElementById("senha").value;
+  const usuario = document.getElementById("usuario").value;
+  const senha = document.getElementById("senha").value;
+  const message = document.getElementById("message");
 
-      if (usuario === "admin" && senha === "admin123") {
-        alert("Login de teste realizado!");
-      } else {
-        document.getElementById("message").style.display = "block";
-      }
+  message.textContent = "Entrando...";
+  message.style.display = "block";
+
+  try {
+    const resposta = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: usuario,
+        password: senha
+      })
     });
-  </script>
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      message.textContent = dados.error || "Usuário ou senha inválidos.";
+      return;
+    }
+
+    localStorage.setItem("iptv_token", dados.token);
+
+    message.textContent = "Login realizado com sucesso!";
+
+    alert("Login realizado com sucesso!");
+  } catch (erro) {
+    message.textContent = "Erro ao conectar ao servidor.";
+  }
+});
+</script>
 
 </body>
 </html>
