@@ -575,7 +575,6 @@ async function adicionarCanal(){
     alert("Informe o nome e a URL do canal.");
     return;
   }
-
   const r=await api("/api/channels",{
     method:"POST",
     body:JSON.stringify({
@@ -594,7 +593,6 @@ async function adicionarCanal(){
     alert(data.error||"Erro ao criar canal.");
     return;
   }
-  
   document.getElementById("canalNome").value="";
   document.getElementById("canalCategoria").value="";
   document.getElementById("canalUrl").value="";
