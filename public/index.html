@@ -617,31 +617,7 @@ async function excluirCanal(id){
   if(r && r.ok){
     carregarTudo();
   }
-}
-
-/* COPIAR M3U */
-async function copiar(texto){
-
-  try{
-    await navigator.clipboard.writeText(texto);
-    alert("Link M3U copiado!");
-  }catch(e){
-    prompt("Copie o link M3U:",texto);
-  }
-}
-
-/* ATUALIZAR TUDO */
-async function carregarTudo(){
-
-  await carregarDashboard();
-  await carregarClientes();
-  await carregarCanais();
-}
-
-/* LOGIN AUTOMÁTICO */
-if(token){
-  mostrarDashboard();
-} async function importarM3U(){
+async function importarM3U(){
   const input = document.getElementById("arquivoM3U");
   const status = document.getElementById("statusM3U");
 
@@ -650,38 +626,79 @@ if(token){
     return;
   }
 
-  status.textContent = "Importando...";
+  status.textContent = "Lendo playlist...";
 
   try{
     const content = await new Promise((resolve, reject) => {
-  const reader = new FileReader();
+      const reader = new FileReader();
 
-  reader.onload = () => resolve(reader.result);
-  reader.onerror = () => reject(reader.error);
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = () => reject(reader.error);
 
-  reader.readAsText(input.files[0], "UTF-8");
-});
-
-    const r = await api("/api/import-m3u", {
-      method: "POST",
-      body: JSON.stringify({content})
+      reader.readAsText(input.files[0], "UTF-8");
     });
 
-    const data = await r.json();
+    const regex = /#EXTINF[^\r\n]*(?:\r\n|\n|\r)[^\r\n]+/g;
+    const lotes = [];
+    let match;
+    let lote = [];
 
-    if(!r.ok){
-      status.textContent = data.error || "Erro ao importar.";
+    while((match = regex.exec(content)) !== null){
+      lote.push(match[0]);
+
+      if(lote.length >= 25){
+        lotes.push(lote);
+        lote = [];
+      }
+    }
+
+    if(lote.length){
+      lotes.push(lote);
+    }
+
+    if(!lotes.length){
+      status.textContent = "Nenhum canal encontrado no arquivo M3U.";
       return;
     }
 
-    status.textContent = `${data.imported} canais importados com sucesso!`;
+    let totalImportado = 0;
+
+    for(let i = 0; i < lotes.length; i++){
+      status.textContent =
+        `Importando lote ${i + 1} de ${lotes.length}...`;
+
+      const loteM3U = "#EXTM3U\n" + lotes[i].join("\n");
+
+      const r = await api("/api/import-m3u", {
+        method: "POST",
+        body: JSON.stringify({
+          content: loteM3U
+        })
+      });
+
+      const data = await r.json();
+
+      if(!r.ok){
+        status.textContent =
+          data.error || "Erro ao importar lote.";
+        return;
+      }
+
+      totalImportado += Number(data.imported || 0);
+    }
+
+    status.textContent =
+      `${totalImportado} canais importados com sucesso!`;
+
     input.value = "";
     carregarTudo();
 
   }catch(e){
-      status.textContent = "Erro: " + (e.message || e);
+    status.textContent =
+      "Erro: " + (e.message || e);
   }
 }
+  
 
 </script>
 
