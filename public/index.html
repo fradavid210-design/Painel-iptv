@@ -273,8 +273,28 @@ th,td{
 
       <button class="add" onclick="adicionarCanal()">
         ➕ Adicionar canal
-      </button>
-    </div>
+      </button> 
+      
+<div class="box">
+  <h3>📥 Importar playlist M3U</h3>
+
+  <input
+    type="file"
+    id="arquivoM3U"
+    accept=".m3u,.m3u8"
+  >
+
+  <button class="add" onclick="importarM3U()">
+    📥 Importar M3U
+  </button>
+
+  <p id="statusM3U"></p>
+</div>
+
+</div>
+</div> 
+</div>
+    
 
     <!-- CANAIS -->
     <div class="box">
