@@ -3,10 +3,156 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel IPTV</title>
+  <title>Painel IPTV - Login</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login {
+      width: 100%;
+      max-width: 400px;
+      background: #1f2937;
+      padding: 30px 25px;
+      border-radius: 18px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.4);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      color: #9ca3af;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      color: #e5e7eb;
+      margin: 15px 0 7px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 15px;
+      border: 0;
+      border-radius: 10px;
+      background: #7c3aed;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .message {
+      color: #f87171;
+      text-align: center;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .footer {
+      color: #6b7280;
+      text-align: center;
+      margin-top: 25px;
+      font-size: 13px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Painel IPTV</h1>
-  <p>Painel online funcionando!</p>
+
+  <div class="login">
+
+    <div class="logo">📺</div>
+
+    <h1>Painel IPTV</h1>
+
+    <div class="subtitle">
+      Acesso administrativo
+    </div>
+
+    <form id="loginForm">
+
+      <label for="usuario">Usuário</label>
+      <input
+        type="text"
+        id="usuario"
+        placeholder="Digite seu usuário"
+        required
+      >
+
+      <label for="senha">Senha</label>
+      <input
+        type="password"
+        id="senha"
+        placeholder="Digite sua senha"
+        required
+      >
+
+      <button type="submit">
+        Entrar
+      </button>
+
+      <div class="message" id="message">
+        Usuário ou senha inválidos.
+      </div>
+
+    </form>
+
+    <div class="footer">
+      © 2026 Painel IPTV
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const usuario = document.getElementById("usuario").value;
+      const senha = document.getElementById("senha").value;
+
+      if (usuario === "admin" && senha === "admin123") {
+        alert("Login de teste realizado!");
+      } else {
+        document.getElementById("message").style.display = "block";
+      }
+    });
+  </script>
+
 </body>
 </html>
