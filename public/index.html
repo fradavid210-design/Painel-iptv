@@ -641,6 +641,39 @@ async function carregarTudo(){
 /* LOGIN AUTOMÁTICO */
 if(token){
   mostrarDashboard();
+} async function importarM3U(){
+  const input = document.getElementById("arquivoM3U");
+  const status = document.getElementById("statusM3U");
+
+  if(!input.files.length){
+    alert("Escolha um arquivo M3U.");
+    return;
+  }
+
+  status.textContent = "Importando...";
+
+  try{
+    const content = await input.files[0].text();
+
+    const r = await api("/api/import-m3u", {
+      method: "POST",
+      body: JSON.stringify({content})
+    });
+
+    const data = await r.json();
+
+    if(!r.ok){
+      status.textContent = data.error || "Erro ao importar.";
+      return;
+    }
+
+    status.textContent = `${data.imported} canais importados com sucesso!`;
+    input.value = "";
+    carregarTudo();
+
+  }catch(e){
+    status.textContent = "Erro ao ler o arquivo M3U.";
+  }
 }
 
 </script>
