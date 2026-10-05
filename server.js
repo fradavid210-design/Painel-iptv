@@ -80,56 +80,81 @@ app.post("/api/import-m3u", auth, (req, res) => {
     const content = String(req.body?.content || "");
 
     if (!content.trim()) {
-      return res.status(400).json({ error: "Playlist M3U vazia." });
+      return res.status(400).json({
+        error: "Playlist M3U vazia."
+      });
     }
 
-    const lines = content.split(/\r?\n/);
-    const imported = [];
+    const d = load();
+    let imported = 0;
     let current = null;
 
-    for (const line of lines) {
-      const s = line.trim();
+    const lines = content.match(/[^\r\n]+/g) || [];
 
-      if (s.startsWith("#EXTINF")) {
-        const name = s.includes(",")
-          ? s.substring(s.indexOf(",") + 1).trim()
-          : "Canal";
+    for (const rawLine of lines) {
+      const s = rawLine.trim();
 
-        const groupMatch = s.match(/group-title="([^"]*)"/i);
-        const logoMatch = s.match(/tvg-logo="([^"]*)"/i);
+      if (!s) continue;
+
+      if (s.startsWith("#EXTINF:")) {
+        const comma = s.indexOf(",");
+
+        const name =
+          comma >= 0
+            ? s.substring(comma + 1).trim()
+            : "Canal";
+
+        const groupMatch =
+          s.match(/group-title="([^"]*)"/i);
+
+        const logoMatch =
+          s.match(/tvg-logo="([^"]*)"/i);
 
         current = {
           name,
-          category: groupMatch ? groupMatch[1] : "Sem categoria",
-          logo: logoMatch ? logoMatch[1] : ""
+          category: groupMatch
+            ? groupMatch[1]
+            : "Geral",
+          logo: logoMatch
+            ? logoMatch[1]
+            : ""
         };
-      } else if (current && s && !s.startsWith("#")) {
-        imported.push({
+
+        continue;
+      }
+
+      if (
+        current &&
+        !s.startsWith("#")
+      ) {
+        d.channels.push({
           id: id(),
           name: current.name,
           category: current.category,
           url: s,
           logo: current.logo
         });
+
+        imported++;
         current = null;
       }
     }
-
-    const d = load();
-
-    d.channels.push(...imported);
 
     save(d);
 
     res.json({
       ok: true,
-      imported: imported.length
+      imported
     });
+
   } catch (e) {
+    console.error("Erro ao importar M3U:", e);
+
     res.status(500).json({
       error: "Erro ao importar M3U."
     });
   }
+});
 });/* Playlist M3U individual. O link só funciona se o cliente existir,
    estiver ativo e não estiver vencido. */
 app.get("/playlist/:token.m3u",(req,res)=>{
