@@ -86,5 +86,5 @@ app.get("/playlist/:token.m3u",(req,res)=>{
   res.set("Content-Type","audio/x-mpegurl; charset=utf-8").send(out);
 });
 
-app.get("/{*splat}"(req,res)=>res.sendFile(path.join(__dirname,"public","index.html")));
+app.get("/{*splat}",(req,res)=>res.sendFile(path.join(__dirname,"public","index.html")));
 app.listen(process.env.PORT||3000,()=>console.log("Painel online na porta "+(process.env.PORT||3000)));
