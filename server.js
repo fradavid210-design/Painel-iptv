@@ -8,7 +8,7 @@ import { fileURLToPath } from "url";
 
 const __dirname=path.dirname(fileURLToPath(import.meta.url));
 const app=express();
-app.use(express.json());
+app.use(express.json({ limit: "200mb" }));
 app.use(express.static(path.join(__dirname,"public")));
 
 const DATA=path.join(__dirname,"data.json");
@@ -74,7 +74,63 @@ app.delete("/api/channels/:id",auth,(req,res)=>{
   const d=load();d.channels=d.channels.filter(x=>x.id!==req.params.id);save(d);res.json({ok:true});
 });
 
-/* Playlist M3U individual. O link só funciona se o cliente existir,
+// Importação de playlist M3U
+app.post("/api/import-m3u", auth, (req, res) => {
+  try {
+    const content = String(req.body?.content || "");
+
+    if (!content.trim()) {
+      return res.status(400).json({ error: "Playlist M3U vazia." });
+    }
+
+    const lines = content.split(/\r?\n/);
+    const imported = [];
+    let current = null;
+
+    for (const line of lines) {
+      const s = line.trim();
+
+      if (s.startsWith("#EXTINF")) {
+        const name = s.includes(",")
+          ? s.substring(s.indexOf(",") + 1).trim()
+          : "Canal";
+
+        const groupMatch = s.match(/group-title="([^"]*)"/i);
+        const logoMatch = s.match(/tvg-logo="([^"]*)"/i);
+
+        current = {
+          name,
+          category: groupMatch ? groupMatch[1] : "Sem categoria",
+          logo: logoMatch ? logoMatch[1] : ""
+        };
+      } else if (current && s && !s.startsWith("#")) {
+        imported.push({
+          id: id(),
+          name: current.name,
+          category: current.category,
+          url: s,
+          logo: current.logo
+        });
+        current = null;
+      }
+    }
+
+    const d = load();
+
+    d.channels.push(...imported);
+
+    save(d);
+
+    res.json({
+      ok: true,
+      imported: imported.length
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: "Erro ao importar M3U."
+    });
+  }
+});/* Playlist M3U individual. O link só funciona se o cliente existir,
    estiver ativo e não estiver vencido. */
 app.get("/playlist/:token.m3u",(req,res)=>{
   const d=load(),c=d.clients.find(x=>x.token===req.params.token);
