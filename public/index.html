@@ -645,7 +645,7 @@ async function importarM3U(){
     while((match = regex.exec(content)) !== null){
       lote.push(match[0]);
 
-      if(lote.length >= 25){
+      if(lote.length >= 500){
         lotes.push(lote);
         lote = [];
       }
