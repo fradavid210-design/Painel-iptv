@@ -78,7 +78,6 @@ app.delete("/api/channels/:id",auth,(req,res)=>{
 app.post("/api/import-m3u", auth, (req, res) => {
   try {
     const content = String(req.body?.content || "");
-    const final = req.body?.final === true;
 
     if (!content.trim()) {
       return res.status(400).json({
@@ -86,10 +85,13 @@ app.post("/api/import-m3u", auth, (req, res) => {
       });
     }
 
-    const canais = [];
+    const IMPORT_FILE = path.join(__dirname, "channels.ndjson");
+
     let current = null;
+    let imported = 0;
 
     const lines = content.match(/[^\r\n]+/g) || [];
+    const output = [];
 
     for (const rawLine of lines) {
       const s = rawLine.trim();
@@ -98,6 +100,7 @@ app.post("/api/import-m3u", auth, (req, res) => {
 
       if (s.startsWith("#EXTINF:")) {
         const comma = s.indexOf(",");
+
         const name = comma >= 0
           ? s.substring(comma + 1).trim()
           : "Canal";
@@ -115,44 +118,30 @@ app.post("/api/import-m3u", auth, (req, res) => {
       }
 
       if (current && !s.startsWith("#")) {
-        canais.push({
+        output.push(JSON.stringify({
           id: id(),
           name: current.name,
           category: current.category,
           url: s,
           logo: current.logo
-        });
+        }));
 
+        imported++;
         current = null;
       }
     }
 
-    if (!app.locals.m3uImport) {
-      app.locals.m3uImport = [];
-    }
-
-    app.locals.m3uImport.push(...canais);
-
-    if (final) {
-      const d = load();
-
-      d.channels.push(...app.locals.m3uImport);
-
-      const total = app.locals.m3uImport.length;
-
-      save(d);
-
-      app.locals.m3uImport = [];
-
-      return res.json({
-        ok: true,
-        imported: total
-      });
+    if (output.length) {
+      fs.appendFileSync(
+        IMPORT_FILE,
+        output.join("\n") + "\n",
+        "utf8"
+      );
     }
 
     res.json({
       ok: true,
-      imported: canais.length
+      imported
     });
 
   } catch (e) {
