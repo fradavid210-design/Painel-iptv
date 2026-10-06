@@ -63,7 +63,53 @@ app.delete("/api/clients/:id",auth,(req,res)=>{
   const d=load();d.clients=d.clients.filter(x=>x.id!==req.params.id);save(d);res.json({ok:true});
 });
 
-app.get("/api/channels",auth,(req,res)=>res.json(load().channels));
+app.get("/api/channels",auth,async(req,res)=>{
+  try{
+    const file=path.join(__dirname,"channels.ndjson");
+    const limit=Math.min(Math.max(Number(req.query.limit)||100,1),500);
+    const offset=Math.max(Number(req.query.offset)||0,0);
+    const canais=[];
+    let index=0;
+
+    if(fs.existsSync(file)){
+      const stream=fs.createReadStream(file,{encoding:"utf8"});
+      let buffer="";
+
+      for await(const chunk of stream){
+        buffer+=chunk;
+        const linhas=buffer.split("\n");
+        buffer=linhas.pop()||"";
+
+        for(const linha of linhas){
+          if(index++<offset) continue;
+          if(canais.length>=limit){
+            stream.destroy();
+            break;
+          }
+
+          if(linha.trim()){
+            try{
+              canais.push(JSON.parse(linha));
+            }catch{}
+          }
+        }
+
+        if(canais.length>=limit) break;
+      }
+
+      if(canais.length<limit && buffer.trim() && index>offset){
+        try{
+          canais.push(JSON.parse(buffer));
+        }catch{}
+      }
+    }
+
+    res.json(canais);
+  }catch(e){
+    console.error("Erro ao carregar canais:",e);
+    res.status(500).json({error:"Erro ao carregar canais."});
+  }
+});
 app.post("/api/channels",auth,(req,res)=>{
   const {name,category,url,logo}=req.body||{};
   if(!name||!url)return res.status(400).json({error:"Nome e URL são obrigatórios"});
