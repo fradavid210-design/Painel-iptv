@@ -334,7 +334,13 @@ function mostrarDashboard(){
   document.getElementById("dashboard").style.display="block";
   carregarTudo();
 }
-
+async function carregarTudo(){
+  await Promise.all([
+    carregarDashboard(),
+    carregarClientes(),
+    carregarCanais()
+  ]);
+}
 function logout(){
   localStorage.removeItem("iptv_token");
   token=null;
