@@ -78,6 +78,7 @@ app.delete("/api/channels/:id",auth,(req,res)=>{
 app.post("/api/import-m3u", auth, (req, res) => {
   try {
     const content = String(req.body?.content || "");
+    const final = req.body?.final === true;
 
     if (!content.trim()) {
       return res.status(400).json({
@@ -85,8 +86,7 @@ app.post("/api/import-m3u", auth, (req, res) => {
       });
     }
 
-    const d = load();
-    let imported = 0;
+    const canais = [];
     let current = null;
 
     const lines = content.match(/[^\r\n]+/g) || [];
@@ -98,36 +98,24 @@ app.post("/api/import-m3u", auth, (req, res) => {
 
       if (s.startsWith("#EXTINF:")) {
         const comma = s.indexOf(",");
+        const name = comma >= 0
+          ? s.substring(comma + 1).trim()
+          : "Canal";
 
-        const name =
-          comma >= 0
-            ? s.substring(comma + 1).trim()
-            : "Canal";
-
-        const groupMatch =
-          s.match(/group-title="([^"]*)"/i);
-
-        const logoMatch =
-          s.match(/tvg-logo="([^"]*)"/i);
+        const groupMatch = s.match(/group-title="([^"]*)"/i);
+        const logoMatch = s.match(/tvg-logo="([^"]*)"/i);
 
         current = {
           name,
-          category: groupMatch
-            ? groupMatch[1]
-            : "Geral",
-          logo: logoMatch
-            ? logoMatch[1]
-            : ""
+          category: groupMatch ? groupMatch[1] : "Geral",
+          logo: logoMatch ? logoMatch[1] : ""
         };
 
         continue;
       }
 
-      if (
-        current &&
-        !s.startsWith("#")
-      ) {
-        d.channels.push({
+      if (current && !s.startsWith("#")) {
+        canais.push({
           id: id(),
           name: current.name,
           category: current.category,
@@ -135,16 +123,36 @@ app.post("/api/import-m3u", auth, (req, res) => {
           logo: current.logo
         });
 
-        imported++;
         current = null;
       }
     }
 
-    save(d);
+    if (!app.locals.m3uImport) {
+      app.locals.m3uImport = [];
+    }
+
+    app.locals.m3uImport.push(...canais);
+
+    if (final) {
+      const d = load();
+
+      d.channels.push(...app.locals.m3uImport);
+
+      const total = app.locals.m3uImport.length;
+
+      save(d);
+
+      app.locals.m3uImport = [];
+
+      return res.json({
+        ok: true,
+        imported: total
+      });
+    }
 
     res.json({
       ok: true,
-      imported
+      imported: canais.length
     });
 
   } catch (e) {
