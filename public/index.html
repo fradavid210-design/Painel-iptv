@@ -671,8 +671,9 @@ async function importarM3U(){
       const r = await api("/api/import-m3u", {
         method: "POST",
         body: JSON.stringify({
-          content: loteM3U
-        })
+          content: loteM3U,
+        final: i === lotes.length - 1
+       })
       });
 
       const data = await r.json();
