@@ -634,7 +634,7 @@ async function importarM3U(){
       reader.onload = () => resolve(String(reader.result || ""));
       reader.onerror = () => reject(reader.error);
 
-      reader.readAsText(input.files[0], "UTF-8");
+      reader.readAsText(input.files[0]);
     });
 
     const regex = /#EXTINF[^\r\n]*(?:\r\n|\n|\r)[^\r\n]+/g;
