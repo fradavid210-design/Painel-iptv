@@ -35,14 +35,30 @@ app.post("/api/login",(req,res)=>{
   res.json({token:jwt.sign({admin:true},SECRET,{expiresIn:"12h"})});
 });
 
-app.get("/api/dashboard",auth,(req,res)=>{
-  const d=load();
-  res.json({
-    clients:d.clients.length,
-    active:d.clients.filter(active).length,
-    expired:d.clients.filter(c=>!active(c)).length,
-    channels:d.channels.length
-  });
+app.get("/api/dashboard",auth,async(req,res)=>{
+  try{
+    const d=load();
+    const file=path.join(__dirname,"channels.ndjson");
+    let channels=0;
+
+    if(fs.existsSync(file)){
+      const stream=fs.createReadStream(file,{encoding:"utf8"});
+
+      for await(const chunk of stream){
+        channels+=(chunk.match(/\n/g)||[]).length;
+      }
+    }
+
+    res.json({
+      clients:d.clients.length,
+      active:d.clients.filter(active).length,
+      expired:d.clients.filter(c=>!active(c)).length,
+      channels:channels
+    });
+  }catch(e){
+    console.error("Erro no dashboard:",e);
+    res.status(500).json({error:"Erro ao carregar dashboard."});
+  }
 });
 
 app.get("/api/clients",auth,(req,res)=>res.json(load().clients));
