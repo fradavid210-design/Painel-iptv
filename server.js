@@ -1,5 +1,6 @@
 import express from "express";
 import fs from "fs";
+import readline from "readline";
 import path from "path";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
@@ -219,12 +220,31 @@ app.post("/api/import-m3u", auth, (req, res) => {
 app.get("/playlist/:token.m3u",(req,res)=>{
   const d=load(),c=d.clients.find(x=>x.token===req.params.token);
   if(!c||!active(c)) return res.status(403).type("text").send("#EXTM3U\n# Playlist bloqueada ou vencida");
-  let out="#EXTM3U\n";
-  for(const ch of d.channels){
-    out+=`#EXTINF:-1 tvg-name="${String(ch.name).replaceAll('"','')}" tvg-logo="${String(ch.logo||"").replaceAll('"','')}" group-title="${String(ch.category||"Geral").replaceAll('"','')}",${ch.name}\n${ch.url}\n`;
+  let file=path.join(__dirname,"channels.ndjson");
+
+res.set("Content-Type","application/vnd.apple.mpegurl");
+
+res.write("#EXTM3U\n");
+
+if(fs.existsSync(file)){
+  const stream=fs.createReadStream(file,{encoding:"utf8"});
+  const rl=readline.createInterface({
+    input:stream,
+    crlfDelay:Infinity
+  });
+
+  for await(const line of rl){
+    if(!line.trim()) continue;
+
+    const ch=JSON.parse(line);
+
+    res.write(
+      `#EXTINF:-1 tvg-name="${String(ch.name||"").replaceAll('"','')}" tvg-logo="${String(ch.logo||"").replaceAll('"','')}" group-title="${String(ch.category||"Geral").replaceAll('"','')}",${ch.name}\n${ch.url}\n`
+    );
   }
-  res.set("Content-Type","audio/x-mpegurl; charset=utf-8").send(out);
-});
+}
+
+res.end();
 
 app.get("/{*splat}",(req,res)=>res.sendFile(path.join(__dirname,"public","index.html")));
 app.listen(process.env.PORT||3000,()=>console.log("Painel online na porta "+(process.env.PORT||3000)));
