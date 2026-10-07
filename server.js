@@ -222,7 +222,8 @@ app.get("/playlist/:token.m3u",async (req,res)=>{
   if(!c||!active(c)) return res.status(403).type("text").send("#EXTM3U\n# Playlist bloqueada ou vencida");
   let file=path.join(__dirname,"channels.ndjson");
 
-res.set("Content-Type","application/vnd.apple.mpegurl");
+res.set("Content-Type", "audio/x-mpegurl");
+res.set("Content-Disposition", 'attachment; filename="playlist.m3u"');
 
 res.write("#EXTM3U\n");
 
