@@ -5,7 +5,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { fileURLToPath } from "url";
-
+import pg from "pg";
 const __dirname=path.dirname(fileURLToPath(import.meta.url));
 const app=express();
 app.use(express.json({ limit: "200mb" }));
