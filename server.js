@@ -217,7 +217,7 @@ app.post("/api/import-m3u", auth, (req, res) => {
 });
 /* Playlist M3U individual. O link só funciona se o cliente existir,
    estiver ativo e não estiver vencido. */
-app.get("/playlist/:token.m3u",(req,res)=>{
+app.get("/playlist/:token.m3u",async (req,res)=>{
   const d=load(),c=d.clients.find(x=>x.token===req.params.token);
   if(!c||!active(c)) return res.status(403).type("text").send("#EXTM3U\n# Playlist bloqueada ou vencida");
   let file=path.join(__dirname,"channels.ndjson");
