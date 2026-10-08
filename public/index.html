@@ -314,7 +314,7 @@ async function carregarClientes(){
       </td>
       <td>
         <button class="action green" type="button"
-  onclick="mostrarLinkM3U(${JSON.stringify(link)})">
+  onclick="alert('BOTÃO FUNCIONANDO')">
   🔗 M3U
 </button>
 
@@ -612,7 +612,9 @@ async function importarXtream(){
     alert("❌ Não foi possível copiar o link.");
   }
 }
-
+function mostrarLinkM3U(link){
+  prompt("📺 Link M3U do cliente:", link);
+}
 function escapeHtml(value){
   return String(value)
     .replaceAll("&","&amp;")
