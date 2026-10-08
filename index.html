@@ -234,12 +234,6 @@ th,td{
         <input id="clienteUsuario" placeholder="Usuário">
         <input id="clienteValidade" type="date">
       </div>
-
-      <button class="add" onclick="adicionarCliente()">
-        ➕ Adicionar cliente
-      </button>
-    </div>
-
     <!-- CLIENTES -->
     <div class="box">
       <h3>👥 Clientes</h3>
@@ -255,55 +249,72 @@ th,td{
               <th>M3U</th>
               <th>Ações</th>
             </tr>
-          <!-- NOVO CANAL -->
-<div class="box">
-  <h3>📺 Adicionar canal</h3>
+          </thead>
 
-  <input id="canalNome" placeholder="Nome do canal">
-  <input id="canalCategoria" placeholder="Categoria">
-  <input id="canalUrl" placeholder="URL da transmissão">
-  <input id="canalLogo" placeholder="URL da logo (opcional)">
+          <tbody id="clientesLista"></tbody>
+        </table>
+      </div>
+    </div>
 
-  <button class="add" onclick="adicionarCanal()">
-    ➕ Adicionar canal
-  </button>
-</div>
+    <!-- NOVO CANAL -->
+    <div class="box">
+      <h3>📺 Adicionar canal</h3>
 
-<!-- IMPORTAR M3U -->
-<div class="box">
-  <h3>📥 Importar playlist M3U</h3>
+      <input id="canalNome" placeholder="Nome do canal">
+      <input id="canalCategoria" placeholder="Categoria">
+      <input id="canalUrl" placeholder="URL da transmissão">
+      <input id="canalLogo" placeholder="URL da logo (opcional)">
 
-  <input
-    type="file"
-    id="arquivoM3U"
-    accept=".m3u,.m3u8"
-  >
+      <button class="add" onclick="adicionarCanal()">
+        ➕ Adicionar canal
+      </button>
+    </div>
 
-  <button class="add" onclick="importarM3U()">
-    📥 Importar M3U
-  </button>
+    <!-- IMPORTAR M3U -->
+    <div class="box">
+      <h3>📥 Importar playlist M3U</h3>
 
-  <p id="statusM3U"></p>
-</div>
+      <input
+        type="file"
+        id="arquivoM3U"
+        accept=".m3u,.m3u8"
+      >
 
-<!-- IMPORTAR XTREAM CODES -->
-<div class="box" id="xtreamBox">
-  <h3>📡 Importar Xtream Codes</h3>
+      <button class="add" onclick="importarM3U()">
+        📥 Importar M3U
+      </button>
 
-  <input
-    id="xtreamServidor"
-    placeholder="Servidor (ex: http://servidor.com:8080)"
-  >
- <input
-    id="xtreamUsuario"
-    placeholder="Usuário"
-  >
- <input
-    id="xtreamSenha"
-    type="password"
-    placeholder="Senha"
-  >
-  <button class="add" onclick="importarXtream()">
+      <p id="statusM3U"></p>
+    </div>
+
+    <!-- IMPORTAR XTREAM CODES -->
+    <div class="box" id="xtreamBox">
+      <h3>📡 Importar Xtream Codes</h3>
+
+      <input
+        id="xtreamServidor"
+        placeholder="Servidor (ex: http://servidor.com:8080)"
+      >
+
+      <input
+        id="xtreamUsuario"
+        placeholder="Usuário"
+      >
+
+      <input
+        id="xtreamSenha"
+        type="password"
+        placeholder="Senha"
+      >
+
+      <button class="add" onclick="importarXtream()">
+        📡 Importar Xtream
+      </button>
+
+      <p id="statusXtream"></p>
+    </div>
+
+    <!-- CANAIS -->
     📡 Importar Xtream
   </button>
 <p id="statusXtream"></p>
