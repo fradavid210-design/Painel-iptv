@@ -458,7 +458,119 @@ async function importarM3U(){
             "❌ Erro ao importar M3U: " + e.message;
     }
 }
-/* LOGIN */
+/* IMPORTAR XTREAM CODES */
+async function importarXtream(){
+
+    const servidor = document.getElementById("xtreamServidor").value.trim();
+    const usuario = document.getElementById("xtreamUsuario").value.trim();
+    const senha = document.getElementById("xtreamSenha").value.trim();
+    const status = document.getElementById("statusXtream");
+
+    if(!servidor || !usuario || !senha){
+        status.innerText = "❌ Preencha servidor, usuário e senha.";
+        return;
+    }
+
+    status.innerText = "⏳ Conectando ao servidor Xtream...";
+
+    try{
+
+        const base = servidor.replace(/\/+$/,"");
+
+        const apiUrl =
+            base +
+            "/player_api.php?username=" +
+            encodeURIComponent(usuario) +
+            "&password=" +
+            encodeURIComponent(senha) +
+            "&action=get_live_streams";
+
+        const resposta = await fetch(apiUrl);
+
+        if(!resposta.ok){
+            throw new Error("Servidor respondeu HTTP " + resposta.status);
+        }
+
+        const canais = await resposta.json();
+
+        if(!Array.isArray(canais)){
+            throw new Error("Resposta Xtream inválida.");
+        }
+
+        status.innerText =
+            "⏳ Encontrados " + canais.length + " canais. Importando...";
+
+        let adicionados = 0;
+
+        for(const canal of canais){
+
+            const nome = canal.name || "Canal";
+            const categoria =
+                canal.category_name || "Geral";
+
+            const logo =
+                canal.stream_icon || "";
+
+            const streamId =
+                canal.stream_id;
+
+            if(!streamId){
+                continue;
+            }
+
+            const url =
+                base +
+                "/live/" +
+                encodeURIComponent(usuario) +
+                "/" +
+                encodeURIComponent(senha) +
+                "/" +
+                streamId +
+                ".ts";
+
+            try{
+
+                const r = await api("/api/channels",{
+                    method:"POST",
+                    body:JSON.stringify({
+                        name:nome,
+                        category:categoria,
+                        url:url,
+                        logo:logo
+                    })
+                });
+
+                if(r && r.ok){
+                    adicionados++;
+                }
+
+            }catch(e){
+
+                console.error(
+                    "Erro ao adicionar canal:",
+                    nome,
+                    e
+                );
+
+            }
+        }
+
+        status.innerText =
+            "✅ Xtream importado: " +
+            adicionados +
+            " canais.";
+
+        await carregarCanais();
+
+    }catch(e){
+
+        console.error(e);
+
+        status.innerText =
+            "❌ Erro ao importar Xtream: " +
+            e.message;
+    }
+}/* LOGIN */
 document.getElementById("loginForm").addEventListener("submit",async function(e){
 
   e.preventDefault();
