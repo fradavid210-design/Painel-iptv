@@ -372,7 +372,92 @@ async function api(url,options={}){
 
   return r;
 }
+/* IMPORTAR M3U */
+async function importarM3U(){
 
+    const arquivo = document.getElementById("arquivoM3U").files[0];
+    const status = document.getElementById("statusM3U");
+
+    if(!arquivo){
+        status.innerText = "❌ Selecione um arquivo M3U.";
+        return;
+    }
+
+    status.innerText = "⏳ Lendo playlist...";
+
+    try{
+
+        const texto = await arquivo.text();
+
+        const linhas = texto.split(/\r?\n/);
+        let adicionados = 0;
+
+        for(let i = 0; i < linhas.length; i++){
+
+            const linha = linhas[i].trim();
+
+            if(!linha.startsWith("#EXTINF:")){
+                continue;
+            }
+
+            const info = linha.substring(8);
+
+            const partes = info.split(",");
+
+            const nome = partes.length > 1
+                ? partes.slice(1).join(",").trim()
+                : "Canal";
+
+            const proxima = (linhas[i + 1] || "").trim();
+
+            if(!proxima || proxima.startsWith("#")){
+                continue;
+            }
+
+            let categoria = "Geral";
+            let logo = "";
+
+            const grupo = info.match(/group-title="([^"]*)"/i);
+            const imagem = info.match(/tvg-logo="([^"]*)"/i);
+
+            if(grupo && grupo[1]){
+                categoria = grupo[1];
+            }
+
+            if(imagem && imagem[1]){
+                logo = imagem[1];
+            }
+
+            const resposta = await api("/api/channels",{
+                method:"POST",
+                body:JSON.stringify({
+                    name:nome,
+                    category:categoria,
+                    url:proxima,
+                    logo:logo
+                })
+            });
+
+            if(resposta && resposta.ok){
+                adicionados++;
+            }
+
+            i++;
+        }
+
+        status.innerText =
+            "✅ Importação concluída: " + adicionados + " canais.";
+
+        await carregarCanais();
+
+    }catch(e){
+
+        console.error(e);
+
+        status.innerText =
+            "❌ Erro ao importar M3U: " + e.message;
+    }
+}
 /* LOGIN */
 document.getElementById("loginForm").addEventListener("submit",async function(e){
 
