@@ -215,7 +215,116 @@ app.post("/api/import-m3u", auth, (req, res) => {
     });
   }
 });
-/* Playlist M3U individual. O link só funciona se o cliente existir,
+// Importação de playlist via Xtream Codes
+app.post("/api/import-xtream", auth, async (req, res) => {
+  try {
+    const { server, username, password } = req.body || {};
+
+    if (!server || !username || !password) {
+      return res.status(400).json({
+        error: "Servidor, usuário e senha são obrigatórios."
+      });
+    }
+
+    const base = String(server).trim().replace(/\/+$/, "");
+
+    if (!/^https?:\/\//i.test(base)) {
+      return res.status(400).json({
+        error: "O servidor deve começar com http:// ou https://"
+      });
+    }
+
+    const params = new URLSearchParams({
+      username: String(username),
+      password: String(password),
+      type: "m3u_plus",
+      output: "ts"
+    });
+
+    const response = await fetch(
+      `${base}/get.php?${params.toString()}`
+    );
+
+    if (!response.ok) {
+      return res.status(502).json({
+        error: `O servidor Xtream respondeu HTTP ${response.status}.`
+      });
+    }
+
+    const content = await response.text();
+
+    if (!content || !content.includes("#EXTINF")) {
+      return res.status(502).json({
+        error: "O servidor não retornou uma playlist M3U válida."
+      });
+    }
+
+    const lines = content.split(/\r?\n/);
+    const output = [];
+    let current = null;
+
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+
+      if (!line) continue;
+
+      if (line.startsWith("#EXTINF:")) {
+        const comma = line.indexOf(",");
+
+        const name = comma >= 0
+          ? line.substring(comma + 1).trim()
+          : "Canal";
+
+        const groupMatch = line.match(/group-title="([^"]*)"/i);
+        const logoMatch = line.match(/tvg-logo="([^"]*)"/i);
+
+        current = {
+          name,
+          category: groupMatch ? groupMatch[1] : "Geral",
+          logo: logoMatch ? logoMatch[1] : ""
+        };
+
+        continue;
+      }
+
+      if (current && !line.startsWith("#")) {
+        output.push(JSON.stringify({
+          id: id(),
+          name: current.name,
+          category: current.category,
+          url: line,
+          logo: current.logo
+        }));
+
+        current = null;
+      }
+    }
+
+    if (!output.length) {
+      return res.status(400).json({
+        error: "Nenhum canal foi encontrado na playlist."
+      });
+    }
+
+    fs.appendFileSync(
+      IMPORT_FILE,
+      output.join("\n") + "\n",
+      "utf8"
+    );
+
+    res.json({
+      ok: true,
+      imported: output.length
+    });
+
+  } catch (e) {
+    console.error("Erro ao importar Xtream:", e);
+
+    res.status(500).json({
+      error: "Erro ao importar a playlist Xtream."
+    });
+  }
+});/* Playlist M3U individual. O link só funciona se o cliente existir,
    estiver ativo e não estiver vencido. */
 app.get("/playlist/:token.m3u",async (req,res)=>{
   const d=load(),c=d.clients.find(x=>x.token===req.params.token);
