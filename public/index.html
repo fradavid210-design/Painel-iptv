@@ -314,9 +314,10 @@ async function carregarClientes(){
       </td>
       <td>
         <button class="action green" type="button"
-          onclick="copiar(${JSON.stringify(link)})">
-          🔗 Copiar
-        </button>
+  onclick="mostrarLinkM3U(${JSON.stringify(link)})">
+  🔗 M3U
+</button>
+
       </td>
       <td>
         <button class="action ${c.active ? "orange" : "green"}" type="button"
