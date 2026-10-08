@@ -31,9 +31,10 @@ function auth(req,res,next){
 function active(c){return c.active && new Date(c.expiresAt+"T23:59:59")>=new Date()}
 
 app.post("/api/login", (req, res) => {
-  const { username, password } = req.body || {};
+  console.log(">>> LOGIN CHEGOU NO SERVIDOR <<<");
+  console.log(req.body);
 
-  console.log("LOGIN RECEBIDO:", username, password);
+  const { username, password } = req.body || {};
 
   if (username !== ADMIN_USER || password !== ADMIN_PASS) {
     return res.status(401).json({
