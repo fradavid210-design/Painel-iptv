@@ -394,54 +394,55 @@ async function api(url,options={}){
 }
 
 /* LOGIN */
-document.getElementById("loginForm").addEventListener("submit",async function(e){
-
+<script>
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
-  const usuario=document.getElementById("usuario").value;
-  const senha=document.getElementById("senha").value;
-  const msg=document.getElementById("loginMsg");
+  const usuario = document.getElementById("usuario").value.trim();
+  const senha = document.getElementById("senha").value;
+  const msg = document.getElementById("loginMsg");
 
-  msg.textContent="Entrando...";
+  msg.textContent = "Entrando...";
 
-  try{
-
-    const r=await fetch("/api/login",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
+  try {
+    const r = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
       },
-      body:JSON.stringify({
-        username:usuario,
-        password:senha
+      body: JSON.stringify({
+        username: usuario,
+        password: senha
       })
     });
 
     const data = await r.json();
 
-if (!r.ok) {
-    msg.textContent = data.error || "Usuário ou senha inválidos";
-    return;
-}
+    if (!r.ok) {
+      msg.textContent = data.error || "Usuário ou senha inválidos";
+      return;
+    }
 
-if (!data.token) {
-    msg.textContent = "Login realizado, mas o servidor não enviou o token.";
-    return;
-}
+    if (!data.token) {
+      msg.textContent = "Servidor não retornou o token";
+      return;
+    }
 
-localStorage.setItem("iptv_token", data.token);
-token = data.token;
+    localStorage.setItem("iptv_token", data.token);
 
-document.getElementById("usuario").value = "";
-document.getElementById("senha").value = "";
+    msg.textContent = "Login realizado!";
 
-mostrarDashboard();
+    document.getElementById("usuario").value = "";
+    document.getElementById("senha").value = "";
 
-  }catch(e){
-    msg.textContent="Erro ao conectar ao servidor.";
+    mostrarDashboard();
+
+  } catch (erro) {
+    console.error(erro);
+    msg.textContent = "Erro ao conectar ao servidor";
   }
-
 });
+</script>
 
 /* DASHBOARD */
 async function carregarDashboard(){
