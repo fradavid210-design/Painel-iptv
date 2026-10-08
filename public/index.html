@@ -417,17 +417,25 @@ document.getElementById("loginForm").addEventListener("submit",async function(e)
       })
     });
 
-    const data=await r.json();
+    const data = await r.json();
 
-    if(!r.ok){
-      msg.textContent=data.error||"Usuário ou senha inválidos.";
-      return;
-    }
+if (!r.ok) {
+    msg.textContent = data.error || "Usuário ou senha inválidos";
+    return;
+}
 
-    localStorage.setItem("iptv_token",data.token);
-    token=data.token;
+if (!data.token) {
+    msg.textContent = "Login realizado, mas o servidor não enviou o token.";
+    return;
+}
 
-    mostrarDashboard();
+localStorage.setItem("iptv_token", data.token);
+token = data.token;
+
+document.getElementById("usuario").value = "";
+document.getElementById("senha").value = "";
+
+mostrarDashboard();
 
   }catch(e){
     msg.textContent="Erro ao conectar ao servidor.";
