@@ -32,7 +32,7 @@ function active(c){return c.active && new Date(c.expiresAt+"T23:59:59")>=new Dat
 
 app.post("/api/login",(req,res)=>{
   const {username,password}=req.body||{};
-  if(username!=="admin" || password!=="12345678") return res.status(401).json({error:"Login inválido"});
+  if(username!== ADMIN_USER || password!== ADMIN_PASS){return res.status(401).json({error:"Login inválido"});
   res.json({token:jwt.sign({admin:true},SECRET,{expiresIn:"12h"})});
 });
 
