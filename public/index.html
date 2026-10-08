@@ -373,20 +373,24 @@ function logout(){
 }
 
 async function api(url,options={}){
-  options.headers={
-    ...headers(),
-    ...(options.headers||{})
-  };
+    const currentToken = localStorage.getItem("iptv_token");
 
-  const r=await fetch(url,options);
+    options.headers = {
+        "Content-Type":"application/json",
+        ...(currentToken ? {
+            "Authorization":"Bearer " + currentToken
+        } : {}),
+        ...(options.headers || {})
+    };
 
-  if(r.status===401){
-    localStorage.removeItem("iptv_token");
-    location.reload();
-    return;
-  }
+    const r = await fetch(url, options);
 
-  return r;
+    if(r.status === 401){
+        console.log("Token rejeitado pelo servidor");
+        return r;
+    }
+
+    return r;
 }
 
 /* LOGIN */
