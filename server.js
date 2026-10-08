@@ -811,11 +811,16 @@ app.post("/api/import-xtream", auth, async (req, res) => {
     );
 
     if (!response.ok) {
-      return res.status(502).json({
-        error:
-          `A API Xtream recusou a conexão. HTTP ${response.status}.`
-      });
-    }
+  const body = await response.text();
+
+  console.log("ERRO API XTREAM:", response.status);
+  console.log("RESPOSTA DO SERVIDOR:", body);
+
+  return res.status(response.status).json({
+    error: `Servidor Xtream respondeu HTTP ${response.status}`,
+    details: body.slice(0, 1000)
+  });
+}
 
     const info = await response.json();
 
