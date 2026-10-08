@@ -7,46 +7,288 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#fff}
-button,input{font:inherit}
-.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.card{width:100%;max-width:420px;background:#151b2e;padding:30px;border-radius:20px;box-shadow:0 10px 40px #0008}
-.logo{text-align:center;font-size:50px}
-h1{text-align:center;margin:10px 0}
-.sub{text-align:center;color:#9ca3af;margin-bottom:25px}
-input{width:100%;padding:14px;margin:7px 0 14px;border:1px solid #374151;border-radius:10px;background:#0f172a;color:white;outline:none}
-button{border:0;border-radius:10px;padding:13px 18px;cursor:pointer;font-weight:bold}
-.btn{width:100%;background:#7c3aed;color:white}
-.btn:hover{background:#6d28d9}
-.msg{margin-top:15px;text-align:center;color:#fca5a5;min-height:20px}
-.dashboard{display:none;min-height:100vh}
-.top{background:#111827;padding:18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
-.top h2{margin:0}
-.logout{background:#ef4444;color:white;padding:9px 13px}
-.container{max-width:1100px;margin:auto;padding:20px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat{background:#151b2e;padding:18px;border-radius:14px}
-.stat strong{display:block;font-size:28px;margin-top:8px}
-.box{background:#151b2e;padding:20px;border-radius:16px;margin-bottom:20px}
-.box h3{margin-top:0}
-.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.formgrid input{margin:0}
-.add{background:#22c55e;color:white;margin-top:10px}
-.tablewrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-th,td{padding:12px 8px;border-bottom:1px solid #293146;text-align:left;white-space:nowrap}
-.badge{padding:5px 9px;border-radius:20px;font-size:12px}
-.ok{background:#14532d;color:#86efac}
-.no{background:#7f1d1d;color:#fca5a5}
-.action{padding:7px 9px;margin:2px}
-.green{background:#16a34a;color:#fff}
-.orange{background:#f59e0b;color:#111}
-.red{background:#dc2626;color:#fff}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b1020;
+  color:#fff;
+}
+
+button,input{
+  font:inherit;
+}
+
+.login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.card{
+  width:100%;
+  max-width:420px;
+  background:#151b2e;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 40px #0008;
+}
+
+.logo{
+  text-align:center;
+  font-size:50px;
+}
+
+h1{
+  text-align:center;
+  margin:10px 0;
+}
+
+.sub{
+  text-align:center;
+  color:#9ca3af;
+  margin-bottom:25px;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin:7px 0 14px;
+  border:1px solid #374151;
+  border-radius:10px;
+  background:#0f172a;
+  color:white;
+  outline:none;
+}
+
+button{
+  border:0;
+  border-radius:10px;
+  padding:13px 18px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.btn{
+  width:100%;
+  background:#7c3aed;
+  color:white;
+}
+
+.msg{
+  margin-top:15px;
+  text-align:center;
+  color:#fca5a5;
+  min-height:20px;
+}
+
+.dashboard{
+  display:none;
+  min-height:100vh;
+}
+
+.top{
+  background:#111827;
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+.top h2{
+  margin:0;
+}
+
+.logout{
+  background:#ef4444;
+  color:white;
+  padding:9px 13px;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.stat{
+  background:#151b2e;
+  padding:18px;
+  border-radius:14px;
+}
+
+.stat strong{
+  display:block;
+  font-size:28px;
+  margin-top:8px;
+}
+
+.box{
+  background:#151b2e;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:20px;
+}
+
+.box h3{
+  margin-top:0;
+}
+
+.formgrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.formgrid input{
+  margin:0;
+}
+
+.add{
+  background:#22c55e;
+  color:white;
+  margin-top:10px;
+}
+
+.tablewrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:12px 8px;
+  border-bottom:1px solid #293146;
+  text-align:left;
+  white-space:nowrap;
+}
+
+.badge{
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.ok{
+  background:#14532d;
+  color:#86efac;
+}
+
+.no{
+  background:#7f1d1d;
+  color:#fca5a5;
+}
+
+.action{
+  padding:7px 9px;
+  margin:2px;
+}
+
+.green{
+  background:#16a34a;
+  color:#fff;
+}
+
+.orange{
+  background:#f59e0b;
+  color:#111;
+}
+
+.red{
+  background:#dc2626;
+  color:#fff;
+}
+
+.m3u-box{
+  width:100%;
+  min-height:120px;
+  padding:12px;
+  margin-top:10px;
+  background:#0f172a;
+  color:#fff;
+  border:1px solid #374151;
+  border-radius:10px;
+  word-break:break-all;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0009;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:9999;
+}
+
+.modal-card{
+  width:100%;
+  max-width:600px;
+  background:#151b2e;
+  padding:20px;
+  border-radius:16px;
+}
+
+.modal-title{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.modal-actions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+
+.modal-actions button{
+  flex:1;
+}
+
+.close-btn{
+  background:#dc2626;
+  color:white;
+}
+
+.copy-btn{
+  background:#16a34a;
+  color:white;
+}
+
 @media(max-width:700px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .formgrid{grid-template-columns:1fr}
-  .top h2{font-size:18px}
-  .container{padding:12px}
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .formgrid{
+    grid-template-columns:1fr;
+  }
+
+  .top h2{
+    font-size:18px;
+  }
+
+  .container{
+    padding:12px;
+  }
+
 }
 </style>
 </head>
@@ -54,52 +296,139 @@ th,td{padding:12px 8px;border-bottom:1px solid #293146;text-align:left;white-spa
 <body>
 
 <section id="login" class="login">
+
   <div class="card">
+
     <div class="logo">📺</div>
+
     <h1>Painel IPTV</h1>
-    <div class="sub">Acesso administrativo</div>
+
+    <div class="sub">
+      Acesso administrativo
+    </div>
 
     <form id="loginForm" onsubmit="return fazerLogin(event)">
-      <input id="usuario" placeholder="Usuário" autocomplete="username" required>
-      <input id="senha" type="password" placeholder="Senha" autocomplete="current-password" required>
-      <button class="btn" type="submit">Entrar</button>
+
+      <input
+        id="usuario"
+        placeholder="Usuário"
+        autocomplete="username"
+        required
+      >
+
+      <input
+        id="senha"
+        type="password"
+        placeholder="Senha"
+        autocomplete="current-password"
+        required
+      >
+
+      <button
+        class="btn"
+        type="submit"
+      >
+        Entrar
+      </button>
+
     </form>
 
     <div id="loginMsg" class="msg"></div>
+
   </div>
+
 </section>
+
 
 <section id="dashboard" class="dashboard">
 
   <header class="top">
+
     <h2>📺 Painel IPTV</h2>
-    <button class="logout" type="button" onclick="logout()">Sair</button>
+
+    <button
+      class="logout"
+      type="button"
+      onclick="logout()"
+    >
+      Sair
+    </button>
+
   </header>
+
 
   <main class="container">
 
+
     <div class="stats">
-      <div class="stat">Clientes<strong id="totalClientes">0</strong></div>
-      <div class="stat">Ativos<strong id="clientesAtivos">0</strong></div>
-      <div class="stat">Vencidos<strong id="clientesVencidos">0</strong></div>
-      <div class="stat">Canais<strong id="totalCanais">0</strong></div>
-    </div>
 
-    <div class="box">
-      <h3>👤 Adicionar cliente</h3>
-      <div class="formgrid">
-        <input id="clienteNome" placeholder="Nome do cliente">
-        <input id="clienteUsuario" placeholder="Usuário">
-        <input id="clienteValidade" type="date">
+      <div class="stat">
+        Clientes
+        <strong id="totalClientes">0</strong>
       </div>
-      <button class="add" type="button" onclick="adicionarCliente()">➕ Adicionar cliente</button>
+
+      <div class="stat">
+        Ativos
+        <strong id="clientesAtivos">0</strong>
+      </div>
+
+      <div class="stat">
+        Vencidos
+        <strong id="clientesVencidos">0</strong>
+      </div>
+
+      <div class="stat">
+        Canais
+        <strong id="totalCanais">0</strong>
+      </div>
+
     </div>
 
+
     <div class="box">
+
+      <h3>👤 Adicionar cliente</h3>
+
+      <div class="formgrid">
+
+        <input
+          id="clienteNome"
+          placeholder="Nome do cliente"
+        >
+
+        <input
+          id="clienteUsuario"
+          placeholder="Usuário"
+        >
+
+        <input
+          id="clienteValidade"
+          type="date"
+        >
+
+      </div>
+
+      <button
+        class="add"
+        type="button"
+        onclick="adicionarCliente()"
+      >
+        ➕ Adicionar cliente
+      </button>
+
+    </div>
+
+
+    <div class="box">
+
       <h3>👥 Clientes</h3>
+
       <div class="tablewrap">
+
         <table>
+
           <thead>
+
             <tr>
               <th>Nome</th>
               <th>Usuário</th>
@@ -108,553 +437,1513 @@ th,td{padding:12px 8px;border-bottom:1px solid #293146;text-align:left;white-spa
               <th>M3U</th>
               <th>Ações</th>
             </tr>
+
           </thead>
+
           <tbody id="clientesLista"></tbody>
+
         </table>
+
       </div>
+
     </div>
 
+
     <div class="box">
+
       <h3>📡 Importar Xtream Codes</h3>
-      <input id="xtreamServidor" placeholder="Servidor (ex: http://servidor.com:8080)">
-      <input id="xtreamUsuario" placeholder="Usuário">
-      <input id="xtreamSenha" type="password" placeholder="Senha">
-      <button class="add" type="button" onclick="importarXtream()">📡 Importar Xtream</button>
+
+      <input
+        id="xtreamServidor"
+        placeholder="Servidor (ex: http://servidor.com:8080)"
+      >
+
+      <input
+        id="xtreamUsuario"
+        placeholder="Usuário"
+      >
+
+      <input
+        id="xtreamSenha"
+        type="password"
+        placeholder="Senha"
+      >
+
+      <button
+        class="add"
+        type="button"
+        onclick="importarXtream()"
+      >
+        📡 Importar Xtream
+      </button>
+
       <p id="statusXtream"></p>
+
     </div>
 
+
     <div class="box">
+
       <h3>📺 Adicionar canal</h3>
-      <input id="canalNome" placeholder="Nome do canal">
-      <input id="canalCategoria" placeholder="Categoria">
-      <input id="canalUrl" placeholder="URL da transmissão">
-      <input id="canalLogo" placeholder="URL da logo (opcional)">
-      <button class="add" type="button" onclick="adicionarCanal()">➕ Adicionar canal</button>
+
+      <input
+        id="canalNome"
+        placeholder="Nome do canal"
+      >
+
+      <input
+        id="canalCategoria"
+        placeholder="Categoria"
+      >
+
+      <input
+        id="canalUrl"
+        placeholder="URL da transmissão"
+      >
+
+      <input
+        id="canalLogo"
+        placeholder="URL da logo (opcional)"
+      >
+
+      <button
+        class="add"
+        type="button"
+        onclick="adicionarCanal()"
+      >
+        ➕ Adicionar canal
+      </button>
+
     </div>
 
+
     <div class="box">
+
       <h3>📥 Importar playlist M3U</h3>
-      <input type="file" id="arquivoM3U" accept=".m3u,.m3u8">
-      <button class="add" type="button" onclick="importarM3U()">📥 Importar M3U</button>
+
+      <input
+        type="file"
+        id="arquivoM3U"
+        accept=".m3u,.m3u8"
+      >
+
+      <button
+        class="add"
+        type="button"
+        onclick="importarM3U()"
+      >
+        📥 Importar M3U
+      </button>
+
       <p id="statusM3U"></p>
+
     </div>
 
+
     <div class="box">
+
       <h3>📡 Canais cadastrados</h3>
+
       <div class="tablewrap">
+
         <table>
+
           <thead>
+
             <tr>
               <th>Canal</th>
               <th>Categoria</th>
               <th>Ação</th>
             </tr>
+
           </thead>
+
           <tbody id="canaisLista"></tbody>
+
         </table>
+
       </div>
+
     </div>
 
+
   </main>
+
 </section>
 
+
+<!-- MODAL M3U -->
+
+<div
+  id="m3uModal"
+  class="modal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-title">
+      🔗 Link M3U do cliente
+    </div>
+
+    <textarea
+      id="m3uLink"
+      class="m3u-box"
+      readonly
+    ></textarea>
+
+    <div class="modal-actions">
+
+      <button
+        class="copy-btn"
+        type="button"
+        onclick="copiarM3U()"
+      >
+        📋 Copiar
+      </button>
+
+      <button
+        class="close-btn"
+        type="button"
+        onclick="fecharM3U()"
+      >
+        Fechar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
+
 "use strict";
 
-let token = localStorage.getItem("iptv_token") || "";
+
+let token =
+  localStorage.getItem("iptv_token") || "";
+
 
 function mostrarLogin(){
+
   document.getElementById("login").style.display = "flex";
+
   document.getElementById("dashboard").style.display = "none";
+
 }
+
 
 function mostrarDashboard(){
+
   document.getElementById("login").style.display = "none";
+
   document.getElementById("dashboard").style.display = "block";
+
 }
+
 
 function logout(){
+
   localStorage.removeItem("iptv_token");
+
   token = "";
+
   mostrarLogin();
+
   document.getElementById("loginMsg").textContent = "";
+
   document.getElementById("senha").value = "";
+
 }
+
 
 async function api(url, options = {}){
-  const currentToken = localStorage.getItem("iptv_token") || "";
+
+  const currentToken =
+    localStorage.getItem("iptv_token") || "";
 
   options.headers = {
+
     "Content-Type":"application/json",
-    ...(currentToken ? {"Authorization":"Bearer " + currentToken} : {}),
+
+    ...(currentToken
+      ? {"Authorization":"Bearer " + currentToken}
+      : {}),
+
     ...(options.headers || {})
+
   };
 
-  const response = await fetch(url, options);
+  const response =
+    await fetch(url, options);
+
 
   if(response.status === 401){
+
     localStorage.removeItem("iptv_token");
+
     token = "";
+
     mostrarLogin();
+
   }
+
 
   return response;
+
 }
+
 
 async function fazerLogin(event){
-  if(event) event.preventDefault();
 
-  const usuario = document.getElementById("usuario").value.trim();
-  const senha = document.getElementById("senha").value;
-  const msg = document.getElementById("loginMsg");
+  if(event){
+    event.preventDefault();
+  }
+
+
+  const usuario =
+    document.getElementById("usuario").value.trim();
+
+  const senha =
+    document.getElementById("senha").value;
+
+  const msg =
+    document.getElementById("loginMsg");
+
 
   if(!usuario || !senha){
-    msg.textContent = "Informe usuário e senha.";
+
+    msg.textContent =
+      "Informe usuário e senha.";
+
     return false;
+
   }
 
-  msg.textContent = "Entrando...";
+
+  msg.textContent =
+    "Entrando...";
+
 
   try{
-    const r = await fetch("/api/login", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        username:usuario,
-        password:senha
-      })
-    });
+
+    const r =
+      await fetch("/api/login",{
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+          username:usuario,
+
+          password:senha
+
+        })
+
+      });
+
 
     let data = {};
+
     try{
+
       data = await r.json();
+
     }catch(_){}
 
+
     if(!r.ok){
-      msg.textContent = data.error || "Usuário ou senha inválidos";
+
+      msg.textContent =
+        data.error ||
+        "Usuário ou senha inválidos";
+
       return false;
+
     }
+
 
     if(!data.token){
-      msg.textContent = "Servidor não retornou o token.";
+
+      msg.textContent =
+        "Servidor não retornou o token.";
+
       return false;
+
     }
 
-    localStorage.setItem("iptv_token", data.token);
-    token = data.token;
 
-    document.getElementById("usuario").value = "";
-    document.getElementById("senha").value = "";
-    msg.textContent = "";
-
-    mostrarDashboard();
-    await carregarTudo();
-
-  }catch(e){
-    console.error(e);
-    msg.textContent = "Erro ao conectar ao servidor.";
-  }
-
-  return false;
-}
-
-async function carregarTudo(){
-  try{
-    await Promise.all([
-      carregarDashboard(),
-      carregarClientes(),
-      carregarCanais()
-    ]);
-  }catch(e){
-    console.error("Erro ao carregar painel:", e);
-  }
-}
-
-async function carregarDashboard(){
-  const r = await api("/api/dashboard");
-  if(!r.ok) return;
-
-  const d = await r.json();
-
-  document.getElementById("totalClientes").textContent = d.clients ?? 0;
-  document.getElementById("clientesAtivos").textContent = d.active ?? 0;
-  document.getElementById("clientesVencidos").textContent = d.expired ?? 0;
-  document.getElementById("totalCanais").textContent = d.channels ?? 0;
-}
-
-async function carregarClientes(){
-  const r = await api("/api/clients");
-  if(!r.ok) return;
-
-  const clientes = await r.json();
-  const lista = document.getElementById("clientesLista");
-
-  lista.innerHTML = "";
-
-  if(!Array.isArray(clientes)) return;
-
-  clientes.forEach(c => {
-    const ativo = Boolean(
-      c.active &&
-      c.expiresAt &&
-      new Date(c.expiresAt + "T23:59:59") >= new Date()
+    localStorage.setItem(
+      "iptv_token",
+      data.token
     );
 
-    const link = location.origin + "/playlist/" + encodeURIComponent(c.token) + ".m3u";
-    const tr = document.createElement("tr");
+    token =
+      data.token;
 
-    tr.innerHTML = `
-      <td>${escapeHtml(c.name || "")}</td>
-      <td>${escapeHtml(c.username || "")}</td>
-      <td>${escapeHtml(c.expiresAt || "")}</td>
-      <td>
-        <span class="badge ${ativo ? "ok" : "no"}">
-          ${ativo ? "ATIVO" : "BLOQUEADO/VENCIDO"}
-        </span>
-      </td>
-      <td>
-        <button class="action green" type="button"
-  onclick="mostrarLinkM3U(${JSON.stringify(link)})"
-  🔗 M3U
-</button>
 
-      </td>
-      <td>
-        <button class="action ${c.active ? "orange" : "green"}" type="button"
-          onclick="alternarCliente(${JSON.stringify(c.id)}, ${!c.active})">
-          ${c.active ? "Bloquear" : "Ativar"}
-        </button>
-        <button class="action red" type="button"
-          onclick="excluirCliente(${JSON.stringify(c.id)})">
-          Excluir
-        </button>
-      </td>
-    `;
+    document.getElementById("usuario").value = "";
 
-    lista.appendChild(tr);
-  });
-}
+    document.getElementById("senha").value = "";
 
-async function adicionarCliente(){
-  const name = document.getElementById("clienteNome").value.trim();
-  const username = document.getElementById("clienteUsuario").value.trim();
-  const expiresAt = document.getElementById("clienteValidade").value;
+    msg.textContent = "";
 
-  if(!name || !username || !expiresAt){
-    alert("Preencha nome, usuário e validade.");
-    return;
+
+    mostrarDashboard();
+
+    await carregarTudo();
+
+
+  }catch(e){
+
+    console.error(e);
+
+    msg.textContent =
+      "Erro ao conectar ao servidor.";
+
   }
 
-  const r = await api("/api/clients", {
-    method:"POST",
-    body:JSON.stringify({name, username, expiresAt})
-  });
 
-  const data = await r.json().catch(() => ({}));
+  return false;
+
+}
+
+
+async function carregarTudo(){
+
+  try{
+
+    await Promise.all([
+
+      carregarDashboard(),
+
+      carregarClientes(),
+
+      carregarCanais()
+
+    ]);
+
+  }catch(e){
+
+    console.error(
+      "Erro ao carregar painel:",
+      e
+    );
+
+  }
+
+}
+
+
+async function carregarDashboard(){
+
+  const r =
+    await api("/api/dashboard");
+
 
   if(!r.ok){
-    alert(data.error || "Erro ao criar cliente.");
     return;
   }
 
-  document.getElementById("clienteNome").value = "";
-  document.getElementById("clienteUsuario").value = "";
-  document.getElementById("clienteValidade").value = "";
 
-  alert("Cliente criado com sucesso!");
-  await carregarTudo();
+  const d =
+    await r.json();
+
+
+  document.getElementById(
+    "totalClientes"
+  ).textContent =
+    d.clients ?? 0;
+
+
+  document.getElementById(
+    "clientesAtivos"
+  ).textContent =
+    d.active ?? 0;
+
+
+  document.getElementById(
+    "clientesVencidos"
+  ).textContent =
+    d.expired ?? 0;
+
+
+  document.getElementById(
+    "totalCanais"
+  ).textContent =
+    d.channels ?? 0;
+
 }
 
-async function alternarCliente(id, active){
-  const r = await api("/api/clients/" + encodeURIComponent(id), {
-    method:"PATCH",
-    body:JSON.stringify({active})
-  });
 
-  if(r.ok) await carregarTudo();
-}
+async function carregarClientes(){
 
-async function excluirCliente(id){
-  if(!confirm("Deseja excluir este cliente?")) return;
+  const r =
+    await api("/api/clients");
 
-  const r = await api("/api/clients/" + encodeURIComponent(id), {
-    method:"DELETE"
-  });
 
-  if(r.ok) await carregarTudo();
-}
+  if(!r.ok){
+    return;
+  }
 
-async function carregarCanais(){
-  const r = await api("/api/channels");
-  if(!r.ok) return;
 
-  const canais = await r.json();
-  const lista = document.getElementById("canaisLista");
+  const clientes =
+    await r.json();
+
+
+  const lista =
+    document.getElementById(
+      "clientesLista"
+    );
+
 
   lista.innerHTML = "";
 
-  if(!Array.isArray(canais)) return;
 
-  canais.forEach(c => {
-    const tr = document.createElement("tr");
+  if(!Array.isArray(clientes)){
+    return;
+  }
+
+
+  clientes.forEach(c => {
+
+
+    const ativo =
+      Boolean(
+
+        c.active &&
+
+        c.expiresAt &&
+
+        new Date(
+          c.expiresAt + "T23:59:59"
+        ) >= new Date()
+
+      );
+
+
+    const link =
+      location.origin +
+      "/playlist/" +
+      encodeURIComponent(c.token) +
+      ".m3u";
+
+
+    const tr =
+      document.createElement("tr");
+
 
     tr.innerHTML = `
-      <td>${escapeHtml(c.name || "")}</td>
-      <td>${escapeHtml(c.category || "Geral")}</td>
+
       <td>
-        <button class="action red" type="button"
-          onclick="excluirCanal(${JSON.stringify(c.id)})">
+        ${escapeHtml(c.name || "")}
+      </td>
+
+      <td>
+        ${escapeHtml(c.username || "")}
+      </td>
+
+      <td>
+        ${escapeHtml(c.expiresAt || "")}
+      </td>
+
+      <td>
+
+        <span
+          class="badge ${ativo ? "ok" : "no"}"
+        >
+
+          ${
+            ativo
+              ? "ATIVO"
+              : "BLOQUEADO/VENCIDO"
+          }
+
+        </span>
+
+      </td>
+
+      <td>
+
+        <button
+          class="action green"
+          type="button"
+          onclick="mostrarLinkM3U(${JSON.stringify(link)})"
+        >
+          🔗 M3U
+        </button>
+
+      </td>
+
+      <td>
+
+        <button
+          class="action ${c.active ? "orange" : "green"}"
+          type="button"
+          onclick="alternarCliente(${JSON.stringify(c.id)}, ${!c.active})"
+        >
+          ${c.active ? "Bloquear" : "Ativar"}
+        </button>
+
+        <button
+          class="action red"
+          type="button"
+          onclick="excluirCliente(${JSON.stringify(c.id)})"
+        >
           Excluir
         </button>
+
       </td>
+
     `;
 
+
     lista.appendChild(tr);
+
   });
+
 }
 
-async function adicionarCanal(){
-  const name = document.getElementById("canalNome").value.trim();
-  const category = document.getElementById("canalCategoria").value.trim();
-  const url = document.getElementById("canalUrl").value.trim();
-  const logo = document.getElementById("canalLogo").value.trim();
 
-  if(!name || !url){
-    alert("Informe o nome e a URL do canal.");
+async function adicionarCliente(){
+
+  const name =
+    document.getElementById(
+      "clienteNome"
+    ).value.trim();
+
+
+  const username =
+    document.getElementById(
+      "clienteUsuario"
+    ).value.trim();
+
+
+  const expiresAt =
+    document.getElementById(
+      "clienteValidade"
+    ).value;
+
+
+  if(
+    !name ||
+    !username ||
+    !expiresAt
+  ){
+
+    alert(
+      "Preencha nome, usuário e validade."
+    );
+
     return;
+
   }
 
-  const r = await api("/api/channels", {
-    method:"POST",
-    body:JSON.stringify({name, category, url, logo})
-  });
 
-  const data = await r.json().catch(() => ({}));
+  const r =
+    await api(
+      "/api/clients",
+      {
+
+        method:"POST",
+
+        body:JSON.stringify({
+
+          name,
+
+          username,
+
+          expiresAt
+
+        })
+
+      }
+    );
+
+
+  const data =
+    await r.json().catch(
+      () => ({})
+    );
+
 
   if(!r.ok){
-    alert(data.error || "Erro ao criar canal.");
+
+    alert(
+      data.error ||
+      "Erro ao criar cliente."
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "clienteNome"
+  ).value = "";
+
+
+  document.getElementById(
+    "clienteUsuario"
+  ).value = "";
+
+
+  document.getElementById(
+    "clienteValidade"
+  ).value = "";
+
+
+  alert(
+    "Cliente criado com sucesso!"
+  );
+
+
+  await carregarTudo();
+
+}
+
+
+async function alternarCliente(
+  id,
+  active
+){
+
+  const r =
+    await api(
+      "/api/clients/" +
+      encodeURIComponent(id),
+      {
+
+        method:"PATCH",
+
+        body:JSON.stringify({
+          active
+        })
+
+      }
+    );
+
+
+  if(r.ok){
+
+    await carregarTudo();
+
+  }
+
+}
+
+
+async function excluirCliente(id){
+
+  if(
+    !confirm(
+      "Deseja excluir este cliente?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  const r =
+    await api(
+      "/api/clients/" +
+      encodeURIComponent(id),
+      {
+        method:"DELETE"
+      }
+    );
+
+
+  if(r.ok){
+
+    await carregarTudo();
+
+  }
+
+}
+
+
+async function carregarCanais(){
+
+  const r =
+    await api("/api/channels");
+
+
+  if(!r.ok){
     return;
   }
 
-  document.getElementById("canalNome").value = "";
-  document.getElementById("canalCategoria").value = "";
-  document.getElementById("canalUrl").value = "";
-  document.getElementById("canalLogo").value = "";
 
-  alert("Canal adicionado!");
-  await carregarTudo();
-}
+  const canais =
+    await r.json();
 
-async function excluirCanal(id){
-  if(!confirm("Deseja excluir este canal?")) return;
 
-  const r = await api("/api/channels/" + encodeURIComponent(id), {
-    method:"DELETE"
+  const lista =
+    document.getElementById(
+      "canaisLista"
+    );
+
+
+  lista.innerHTML = "";
+
+
+  if(!Array.isArray(canais)){
+    return;
+  }
+
+
+  canais.forEach(c => {
+
+    const tr =
+      document.createElement("tr");
+
+
+    tr.innerHTML = `
+
+      <td>
+        ${escapeHtml(c.name || "")}
+      </td>
+
+      <td>
+        ${escapeHtml(
+          c.category || "Geral"
+        )}
+      </td>
+
+      <td>
+
+        <button
+          class="action red"
+          type="button"
+          onclick="excluirCanal(${JSON.stringify(c.id)})"
+        >
+          Excluir
+        </button>
+
+      </td>
+
+    `;
+
+
+    lista.appendChild(tr);
+
   });
 
-  if(r.ok) await carregarTudo();
 }
 
-async function importarM3U(){
-  const input = document.getElementById("arquivoM3U");
-  const status = document.getElementById("statusM3U");
 
-  if(!input.files.length){
-    alert("Escolha um arquivo M3U.");
+async function adicionarCanal(){
+
+  const name =
+    document.getElementById(
+      "canalNome"
+    ).value.trim();
+
+
+  const category =
+    document.getElementById(
+      "canalCategoria"
+    ).value.trim();
+
+
+  const url =
+    document.getElementById(
+      "canalUrl"
+    ).value.trim();
+
+
+  const logo =
+    document.getElementById(
+      "canalLogo"
+    ).value.trim();
+
+
+  if(!name || !url){
+
+    alert(
+      "Informe o nome e a URL do canal."
+    );
+
     return;
+
   }
 
-  status.textContent = "Lendo playlist...";
+
+  const r =
+    await api(
+      "/api/channels",
+      {
+
+        method:"POST",
+
+        body:JSON.stringify({
+
+          name,
+
+          category,
+
+          url,
+
+          logo
+
+        })
+
+      }
+    );
+
+
+  const data =
+    await r.json().catch(
+      () => ({})
+    );
+
+
+  if(!r.ok){
+
+    alert(
+      data.error ||
+      "Erro ao criar canal."
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "canalNome"
+  ).value = "";
+
+
+  document.getElementById(
+    "canalCategoria"
+  ).value = "";
+
+
+  document.getElementById(
+    "canalUrl"
+  ).value = "";
+
+
+  document.getElementById(
+    "canalLogo"
+  ).value = "";
+
+
+  alert(
+    "Canal adicionado!"
+  );
+
+
+  await carregarTudo();
+
+}
+
+
+async function excluirCanal(id){
+
+  if(
+    !confirm(
+      "Deseja excluir este canal?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  const r =
+    await api(
+      "/api/channels/" +
+      encodeURIComponent(id),
+      {
+        method:"DELETE"
+      }
+    );
+
+
+  if(r.ok){
+
+    await carregarTudo();
+
+  }
+
+}
+
+
+async function importarM3U(){
+
+  const input =
+    document.getElementById(
+      "arquivoM3U"
+    );
+
+
+  const status =
+    document.getElementById(
+      "statusM3U"
+    );
+
+
+  if(!input.files.length){
+
+    alert(
+      "Escolha um arquivo M3U."
+    );
+
+    return;
+
+  }
+
+
+  status.textContent =
+    "Lendo playlist...";
+
 
   try{
-    const content = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
 
-      reader.onload = () => resolve(String(reader.result || ""));
-      reader.onerror = () => reject(reader.error);
+    const content =
+      await new Promise(
+        (resolve,reject) => {
 
-      reader.readAsText(input.files[0]);
-    });
+          const reader =
+            new FileReader();
 
-    const regex = /#EXTINF[^\r\n]*(?:\r\n|\n|\r)[^\r\n]+/g;
+
+          reader.onload =
+            () =>
+              resolve(
+                String(
+                  reader.result || ""
+                )
+              );
+
+
+          reader.onerror =
+            () =>
+              reject(
+                reader.error
+              );
+
+
+          reader.readAsText(
+            input.files[0]
+          );
+
+        }
+      );
+
+
+    const regex =
+      /#EXTINF[^\r\n]*(?:\r\n|\n|\r)[^\r\n]+/g;
+
+
     const lotes = [];
+
     let match;
+
     let lote = [];
 
-    while((match = regex.exec(content)) !== null){
+
+    while(
+      (match = regex.exec(content))
+      !== null
+    ){
+
       lote.push(match[0]);
 
+
       if(lote.length >= 500){
+
         lotes.push(lote);
+
         lote = [];
+
       }
+
     }
 
-    if(lote.length) lotes.push(lote);
+
+    if(lote.length){
+
+      lotes.push(lote);
+
+    }
+
 
     if(!lotes.length){
-      status.textContent = "Nenhum canal encontrado no arquivo M3U.";
+
+      status.textContent =
+        "Nenhum canal encontrado no arquivo M3U.";
+
       return;
+
     }
+
 
     let totalImportado = 0;
 
-    for(let i = 0; i < lotes.length; i++){
+
+    for(
+      let i = 0;
+      i < lotes.length;
+      i++
+    ){
+
       status.textContent =
-        `Importando lote ${i + 1} de ${lotes.length}...`;
+        `Importando lote ${
+          i + 1
+        } de ${
+          lotes.length
+        }...`;
 
-      const loteM3U = "#EXTM3U\n" + lotes[i].join("\n");
 
-      const r = await api("/api/import-m3u", {
-        method:"POST",
-        body:JSON.stringify({
-          content:loteM3U,
-          final:i === lotes.length - 1
-        })
-      });
+      const loteM3U =
+        "#EXTM3U\n" +
+        lotes[i].join("\n");
 
-      const data = await r.json().catch(() => ({}));
+
+      const r =
+        await api(
+          "/api/import-m3u",
+          {
+
+            method:"POST",
+
+            body:JSON.stringify({
+
+              content:loteM3U,
+
+              final:
+                i === lotes.length - 1
+
+            })
+
+          }
+        );
+
+
+      const data =
+        await r.json().catch(
+          () => ({})
+        );
+
 
       if(!r.ok){
-        status.textContent = data.error || "Erro ao importar lote.";
+
+        status.textContent =
+          data.error ||
+          "Erro ao importar lote.";
+
         return;
+
       }
 
-      totalImportado += Number(data.imported || 0);
+
+      totalImportado +=
+        Number(
+          data.imported || 0
+        );
+
     }
+
 
     status.textContent =
       `${totalImportado} canais importados com sucesso!`;
 
+
     input.value = "";
+
+
     await carregarTudo();
 
+
   }catch(e){
+
     console.error(e);
-    status.textContent = "Erro: " + (e.message || e);
-  }
-}
-
-async function importarXtream(){
-  const servidor = document.getElementById("xtreamServidor").value.trim();
-  const username = document.getElementById("xtreamUsuario").value.trim();
-  const password = document.getElementById("xtreamSenha").value.trim();
-  const status = document.getElementById("statusXtream");
-
-  if(!servidor || !username || !password){
-    alert("Preencha servidor, usuário e senha.");
-    return;
-  }
-
-  status.textContent = "📡 Conectando ao servidor...";
-
-  try{
-    const r = await api("/api/import-xtream", {
-      method:"POST",
-      body:JSON.stringify({
-        server:servidor,
-        username,
-        password
-      })
-    });
-
-    const data = await r.json().catch(() => ({}));
-
-    if(!r.ok){
-      status.textContent =
-        "❌ " + (data.error || "Erro ao importar Xtream.");
-      return;
-    }
 
     status.textContent =
-      `✅ ${data.imported || 0} canais importados com sucesso!`;
+      "Erro: " +
+      (e.message || e);
+
+  }
+
+}
+
+
+async function importarXtream(){
+
+  const servidor =
+    document.getElementById(
+      "xtreamServidor"
+    ).value.trim();
+
+
+  const username =
+    document.getElementById(
+      "xtreamUsuario"
+    ).value.trim();
+
+
+  const password =
+    document.getElementById(
+      "xtreamSenha"
+    ).value.trim();
+
+
+  const status =
+    document.getElementById(
+      "statusXtream"
+    );
+
+
+  if(
+    !servidor ||
+    !username ||
+    !password
+  ){
+
+    alert(
+      "Preencha servidor, usuário e senha."
+    );
+
+    return;
+
+  }
+
+
+  status.textContent =
+    "📡 Conectando ao servidor...";
+
+
+  try{
+
+    const r =
+      await api(
+        "/api/import-xtream",
+        {
+
+          method:"POST",
+
+          body:JSON.stringify({
+
+            server:servidor,
+
+            username,
+
+            password
+
+          })
+
+        }
+      );
+
+
+    const data =
+      await r.json().catch(
+        () => ({})
+      );
+
+
+    if(!r.ok){
+
+      status.textContent =
+        "❌ " +
+        (
+          data.error ||
+          "Erro ao importar Xtream."
+        );
+
+      return;
+
+    }
+
+
+    status.textContent =
+      `✅ ${
+        data.imported || 0
+      } canais importados com sucesso!`;
+
 
     await carregarTudo();
 
+
   }catch(e){
+
     console.error(e);
-    status.textContent = "❌ Erro: " + (e.message || e);
+
+    status.textContent =
+      "❌ Erro: " +
+      (e.message || e);
+
   }
+
 }
 
-  async function copiar(texto){
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(texto);
-      alert("✅ Link M3U copiado!");
-      return;
-    }
 
-    const campo = document.createElement("textarea");
-    campo.value = texto;
-    campo.setAttribute("readonly", "");
-    campo.style.position = "fixed";
-    campo.style.top = "0";
-    campo.style.left = "-9999px";
-    campo.style.opacity = "0";
+/* =========================
+   M3U
+========================= */
 
-    document.body.appendChild(campo);
-    campo.focus();
-    campo.select();
-    campo.setSelectionRange(0, campo.value.length);
 
-    const sucesso = document.execCommand("copy");
-    document.body.removeChild(campo);
-
-    if (sucesso) {
-      alert("✅ Link M3U copiado!");
-    } else {
-      throw new Error("Falha ao copiar");
-    }
-
-  } catch(e) {
-    console.error("Erro ao copiar:", e);
-    alert("❌ Não foi possível copiar o link.");
-  }
-}
 function mostrarLinkM3U(link){
-  prompt("📺 Link M3U do cliente:", link);
+
+  const modal =
+    document.getElementById(
+      "m3uModal"
+    );
+
+
+  const campo =
+    document.getElementById(
+      "m3uLink"
+    );
+
+
+  campo.value = link;
+
+
+  modal.style.display =
+    "flex";
+
 }
+
+
+function fecharM3U(){
+
+  document.getElementById(
+    "m3uModal"
+  ).style.display =
+    "none";
+
+}
+
+
+async function copiarM3U(){
+
+  const campo =
+    document.getElementById(
+      "m3uLink"
+    );
+
+
+  const texto =
+    campo.value;
+
+
+  if(!texto){
+
+    alert(
+      "Link M3U vazio."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    if(
+      navigator.clipboard &&
+      window.isSecureContext
+    ){
+
+      await navigator.clipboard.writeText(
+        texto
+      );
+
+      alert(
+        "✅ Link M3U copiado!"
+      );
+
+      return;
+
+    }
+
+
+    campo.focus();
+
+    campo.select();
+
+    campo.setSelectionRange(
+      0,
+      campo.value.length
+    );
+
+
+    const sucesso =
+      document.execCommand(
+        "copy"
+      );
+
+
+    if(sucesso){
+
+      alert(
+        "✅ Link M3U copiado!"
+      );
+
+    }else{
+
+      alert(
+        "Selecione o link e copie manualmente."
+      );
+
+    }
+
+
+  }catch(e){
+
+    console.error(
+      "Erro ao copiar:",
+      e
+    );
+
+
+    campo.focus();
+
+    campo.select();
+
+    alert(
+      "Selecione o link e toque em Copiar."
+    );
+
+  }
+
+}
+
+
+/* =========================
+   SEGURANÇA HTML
+========================= */
+
+
 function escapeHtml(value){
+
   return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  mostrarLogin();
 
-  if(token){
-    mostrarDashboard();
+/* =========================
+   INICIALIZAÇÃO
+========================= */
 
-    try{
-      const r = await api("/api/dashboard");
 
-      if(r.ok){
-        const d = await r.json();
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
 
-        document.getElementById("totalClientes").textContent = d.clients ?? 0;
-        document.getElementById("clientesAtivos").textContent = d.active ?? 0;
-        document.getElementById("clientesVencidos").textContent = d.expired ?? 0;
-        document.getElementById("totalCanais").textContent = d.channels ?? 0;
+    mostrarLogin();
 
-        await Promise.all([
-          carregarClientes(),
-          carregarCanais()
-        ]);
-      }else{
+
+    if(token){
+
+      mostrarDashboard();
+
+
+      try{
+
+        const r =
+          await api(
+            "/api/dashboard"
+          );
+
+
+        if(r.ok){
+
+          const d =
+            await r.json();
+
+
+          document.getElementById(
+            "totalClientes"
+          ).textContent =
+            d.clients ?? 0;
+
+
+          document.getElementById(
+            "clientesAtivos"
+          ).textContent =
+            d.active ?? 0;
+
+
+          document.getElementById(
+            "clientesVencidos"
+          ).textContent =
+            d.expired ?? 0;
+
+
+          document.getElementById(
+            "totalCanais"
+          ).textContent =
+            d.channels ?? 0;
+
+
+          await Promise.all([
+
+            carregarClientes(),
+
+            carregarCanais()
+
+          ]);
+
+
+        }else{
+
+          logout();
+
+        }
+
+
+      }catch(e){
+
+        console.error(e);
+
         logout();
+
       }
 
-    }catch(e){
-      console.error(e);
-      logout();
     }
+
   }
-});
+);
+
 </script>
 
 </body>
