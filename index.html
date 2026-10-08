@@ -255,26 +255,21 @@ th,td{
               <th>M3U</th>
               <th>Ações</th>
             </tr>
-          </thead>
+          <!-- NOVO CANAL -->
+<div class="box">
+  <h3>📺 Adicionar canal</h3>
 
-          <tbody id="clientesLista"></tbody>
-        </table>
-      </div>
-    </div>
+  <input id="canalNome" placeholder="Nome do canal">
+  <input id="canalCategoria" placeholder="Categoria">
+  <input id="canalUrl" placeholder="URL da transmissão">
+  <input id="canalLogo" placeholder="URL da logo (opcional)">
 
-    <!-- NOVO CANAL -->
-    <div class="box">
-      <h3>📺 Adicionar canal</h3>
+  <button class="add" onclick="adicionarCanal()">
+    ➕ Adicionar canal
+  </button>
+</div>
 
-      <input id="canalNome" placeholder="Nome do canal">
-      <input id="canalCategoria" placeholder="Categoria">
-      <input id="canalUrl" placeholder="URL da transmissão">
-      <input id="canalLogo" placeholder="URL da logo (opcional)">
-
-      <button class="add" onclick="adicionarCanal()">
-        ➕ Adicionar canal
-      </button> 
-      
+<!-- IMPORTAR M3U -->
 <div class="box">
   <h3>📥 Importar playlist M3U</h3>
 
@@ -289,9 +284,10 @@ th,td{
   </button>
 
   <p id="statusM3U"></p>
-<!-- IMPORTAR XTREAM CODES -->
-<div class="box" id="xtreamBox" style="display:block !important;">
+</div>
 
+<!-- IMPORTAR XTREAM CODES -->
+<div class="box" id="xtreamBox">
   <h3>📡 Importar Xtream Codes</h3>
 
   <input
@@ -315,13 +311,14 @@ th,td{
   </button>
 
   <p id="statusXtream"></p>
+</div>
 
-</div>
-</div>
-</div>
+<!-- CANAIS -->
+
+
     
 
-    <!-- CANAIS -->
+    
     <div class="box">
       <h3>📡 Canais cadastrados</h3>
 
