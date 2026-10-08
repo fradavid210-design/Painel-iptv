@@ -30,10 +30,18 @@ function auth(req,res,next){
 }
 function active(c){return c.active && new Date(c.expiresAt+"T23:59:59")>=new Date()}
 
-app.post("/api/login",(req,res)=>{
-  const {username,password}=req.body||{};
-  if(username!== ADMIN_USER || password!== ADMIN_PASS){return res.status(401).json({error:"Login inválido"});
-  res.json({token:jwt.sign({admin:true},SECRET,{expiresIn:"12h"})});
+app.post("/api/login", (req, res) => {
+  const { username, password } = req.body || {};
+
+  if (username !== ADMIN_USER || password !== ADMIN_PASS) {
+    return res.status(401).json({
+      error: "Usuário ou senha inválidos"
+    });
+  }
+
+  res.json({
+    token: jwt.sign({ admin: true }, SECRET, { expiresIn: "12h" })
+  });
 });
 
 app.get("/api/dashboard",auth,async(req,res)=>{
