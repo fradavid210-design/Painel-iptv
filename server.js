@@ -31,6 +31,7 @@ function auth(req,res,next){
 function active(c){return c.active && new Date(c.expiresAt+"T23:59:59")>=new Date()}
 
 app.post("/api/login", (req, res) => {
+  console.log("LOGIN RECEBIDO:", req.body);
   const { username, password } = req.body || {};
 
   if (username !== ADMIN_USER || password !== ADMIN_PASS) {
