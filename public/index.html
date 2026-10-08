@@ -728,108 +728,54 @@ async function importarM3U(){
     status.textContent =
       "Erro: " + (e.message || e);
   }
-} async function importarXtream(){
+async function importarXtream(){
 
   const servidor = document
     .getElementById("xtreamServidor")
-    .value.trim()
-    .replace(/\/+$/,"");
+    .value.trim();
 
-  const usuario = document
+  const username = document
     .getElementById("xtreamUsuario")
     .value.trim();
 
-  const senha = document
+  const password = document
     .getElementById("xtreamSenha")
     .value.trim();
 
   const status = document.getElementById("statusXtream");
 
-  if(!servidor || !usuario || !senha){
+  if(!servidor || !username || !password){
     alert("Preencha servidor, usuário e senha.");
     return;
   }
 
-  status.textContent = "Conectando ao servidor Xtream...";
+  status.textContent = "📡 Conectando ao servidor...";
 
   try {
 
-    const url =
-      servidor +
-      "/player_api.php?username=" +
-      encodeURIComponent(usuario) +
-      "&password=" +
-      encodeURIComponent(senha);
+    const r = await api("/api/import-xtream", {
+      method: "POST",
+      body: JSON.stringify({
+        server: servidor,
+        username: username,
+        password: password
+      })
+    });
 
-    const r = await fetch(url);
-
-    if(!r.ok){
-      throw new Error("Servidor não respondeu.");
-    }
-
-    const dados = await r.json();
-
-    if(!dados.user_info){
-      throw new Error("Usuário ou senha inválidos.");
-    }
-
-    status.textContent = "Conectado! Buscando canais...";
-
-    const canaisUrl =
-      servidor +
-      "/player_api.php?username=" +
-      encodeURIComponent(usuario) +
-      "&password=" +
-      encodeURIComponent(senha) +
-      "&action=get_live_streams";
-
-    const respostaCanais = await fetch(canaisUrl);
-
-    if(!respostaCanais.ok){
-      throw new Error("Não foi possível obter os canais.");
-    }
-
-    const canais = await respostaCanais.json();
-
-    if(!Array.isArray(canais) || !canais.length){
-      status.textContent = "Nenhum canal encontrado.";
+    if(!r){
       return;
     }
 
-    let importados = 0;
+    const data = await r.json();
 
-    for(const canal of canais){
-
-      const streamUrl =
-        servidor +
-        "/live/" +
-        encodeURIComponent(usuario) +
-        "/" +
-        encodeURIComponent(senha) +
-        "/" +
-        canal.stream_id +
-        ".ts";
-
-      const resposta = await api("/api/channels",{
-        method:"POST",
-        body:JSON.stringify({
-          name: canal.name || "Canal",
-          category: canal.category_name || "Geral",
-          url: streamUrl,
-          logo: canal.stream_icon || ""
-        })
-      });
-
-      if(resposta && resposta.ok){
-        importados++;
-      }
-
+    if(!r.ok){
       status.textContent =
-        `Importando ${importados} de ${canais.length}...`;
+        "❌ " + (data.error || "Erro ao importar Xtream.");
+      return;
     }
 
     status.textContent =
-      `✅ ${importados} canais importados com sucesso!`;
+      `✅ ${data.imported || 0} canais importados com sucesso!`;
 
     carregarTudo();
 
