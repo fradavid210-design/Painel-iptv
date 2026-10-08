@@ -442,16 +442,15 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     msg.textContent = "Erro ao conectar ao servidor";
   }
 });
-</script>
+  
+<script>
 
 /* DASHBOARD */
 async function carregarDashboard(){
+  const r = await api("/api/dashboard");
+  if(!r.ok)return;
 
-  const r=await api("/api/dashboard");
-
-  if(!r)return;
-
-  const d=await r.json();
+  const d = await r.json();
 
   document.getElementById("totalClientes").textContent=d.clients;
   document.getElementById("clientesAtivos").textContent=d.active;
@@ -460,6 +459,16 @@ async function carregarDashboard(){
 }
 
 /* CLIENTES */
+async function carregarClientes(){
+  // ...
+}
+
+/* LOGIN */
+document.getElementById("loginForm").addEventListener("submit", async function(e){
+  // ...
+});
+
+  /* CLIENTES */
 async function carregarClientes(){
 
   const r=await api("/api/clients");
