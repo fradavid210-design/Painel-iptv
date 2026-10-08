@@ -769,334 +769,202 @@ async function tentarXtream(url) {
    IMPORTAR XTREAM
 ========================= */
 
-app.post(
-  "/api/import-xtream",
-  auth,
-  async (req, res) => {
-
-    try {
-
-      const {
-        server,
-        username,
-        password
-      } = req.body || {};
-
-      if (
-        !server ||
-        !username ||
-        !password
-      ) {
-
-        return res.status(400).json({
-          error:
-            "Servidor, usuário e senha são obrigatórios."
-        });
-
-      }
-
-      let base =
-        String(server)
-          .trim()
-          .replace(/\/+$/, "");
-
-      if (
-        !/^https?:\/\//i.test(base)
-      ) {
-
-        base =
-          "http://" + base;
-
-      }
-
-      const params =
-        new URLSearchParams({
-
-          username:
-            String(username),
-
-          password:
-            String(password),
-
-          type:
-            "m3u_plus",
-
-          output:
-            "ts"
-
-        });
-
-
-      /* 
-         Primeiro tenta exatamente
-         o endereço informado.
-      */
-
-      const urls = [
-
-        `${base}/get.php?${params.toString()}`
-
-      ];
-
-
-      /*
-         Se foi informado HTTP,
-         também tenta HTTPS.
-      */
-
-      if (
-        base.startsWith(
-          "http://"
-        )
-      ) {
-
-        urls.push(
-          `https://${base.substring(7)}/get.php?${params.toString()}`
-        );
-
-      }
-
-
-      let response = null;
-
-      let lastStatus = null;
-
-      for (
-        const url of urls
-      ) {
-
-        try {
-
-          const r =
-            await tentarXtream(
-              url
-            );
-
-          lastStatus =
-            r.status;
-
-          console.log(
-            "Resposta Xtream:",
-            r.status
-          );
-
-          if (
-            r.ok
-          ) {
-
-            response = r;
-
-            break;
-
-          }
-
-        } catch (e) {
-
-          console.error(
-            "Falha na tentativa:",
-            e.message
-          );
-
-        }
-
-      }
-
-
-      if (!response) {
-
-        return res.status(502).json({
-
-          error:
-            `O servidor Xtream recusou a conexão. HTTP ${lastStatus || "sem resposta"}.`
-
-        });
-
-      }
-
-
-      const content =
-        await response.text();
-
-
-      if (
-        !content ||
-        !content.includes(
-          "#EXTINF"
-        )
-      ) {
-
-        return res.status(502).json({
-
-          error:
-            "O servidor respondeu, mas não retornou uma playlist M3U válida."
-
-        });
-
-      }
-
-
-      const lines =
-        content.split(
-          /\r?\n/
-        );
-
-      let current = null;
-
-      const output = [];
-
-      for (
-        const rawLine of lines
-      ) {
-
-        const line =
-          rawLine.trim();
-
-        if (!line) {
-          continue;
-        }
-
-
-        if (
-          line.startsWith(
-            "#EXTINF:"
-          )
-        ) {
-
-          const comma =
-            line.indexOf(",");
-
-          const name =
-            comma >= 0
-              ? line
-                  .substring(
-                    comma + 1
-                  )
-                  .trim()
-              : "Canal";
-
-
-          const groupMatch =
-            line.match(
-              /group-title="([^"]*)"/i
-            );
-
-
-          const logoMatch =
-            line.match(
-              /tvg-logo="([^"]*)"/i
-            );
-
-
-          current = {
-
-            name,
-
-            category:
-              groupMatch
-                ? groupMatch[1]
-                : "Geral",
-
-            logo:
-              logoMatch
-                ? logoMatch[1]
-                : ""
-
-          };
-
-          continue;
-
-        }
-
-
-        if (
-          current &&
-          !line.startsWith("#")
-        ) {
-
-          output.push(
-            JSON.stringify({
-
-              id: id(),
-
-              name:
-                current.name,
-
-              category:
-                current.category,
-
-              url:
-                line,
-
-              logo:
-                current.logo
-
-            })
-          );
-
-          current = null;
-
-        }
-
-      }
-
-
-      if (!output.length) {
-
-        return res.status(400).json({
-
-          error:
-            "Nenhum canal foi encontrado na playlist Xtream."
-
-        });
-
-      }
-
-
-      fs.appendFileSync(
-
-        IMPORT_FILE,
-
-        output.join("\n") + "\n",
-
-        "utf8"
-
-      );
-
-
-      console.log(
-        "Xtream importado:",
-        output.length,
-        "canais"
-      );
-
-
-      res.json({
-
-        ok: true,
-
-        imported:
-          output.length
-
+app.post("/api/import-xtream", auth, async (req, res) => {
+  try {
+    const { server, username, password } = req.body || {};
+
+    if (!server || !username || !password) {
+      return res.status(400).json({
+        error: "Servidor, usuário e senha são obrigatórios."
       });
-
-    } catch (e) {
-
-      console.error(
-        "Erro ao importar Xtream:",
-        e
-      );
-
-      res.status(500).json({
-
-        error:
-          "Erro ao importar a playlist Xtream."
-
-      });
-
     }
 
+    let base = String(server).trim().replace(/\/+$/, "");
+
+    if (!/^https?:\/\//i.test(base)) {
+      base = "http://" + base;
+    }
+
+    const params = new URLSearchParams({
+      username: String(username),
+      password: String(password)
+    });
+
+    const apiUrl =
+      `${base}/player_api.php?${params.toString()}`;
+
+    console.log("Consultando API Xtream:", apiUrl);
+
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36",
+        "Accept": "application/json,text/plain,*/*"
+      },
+      redirect: "follow"
+    });
+
+    console.log(
+      "Resposta player_api:",
+      response.status
+    );
+
+    if (!response.ok) {
+      return res.status(502).json({
+        error:
+          `A API Xtream recusou a conexão. HTTP ${response.status}.`
+      });
+    }
+
+    const info = await response.json();
+
+    if (
+      info.user_info &&
+      info.user_info.auth === 0
+    ) {
+      return res.status(401).json({
+        error:
+          "Usuário ou senha Xtream inválidos."
+      });
+    }
+
+    const streamsParams = new URLSearchParams({
+      username: String(username),
+      password: String(password),
+      action: "get_live_streams"
+    });
+
+    const streamsUrl =
+      `${base}/player_api.php?${streamsParams.toString()}`;
+
+    console.log(
+      "Buscando canais Xtream..."
+    );
+
+    const streamsResponse = await fetch(
+      streamsUrl,
+      {
+        method: "GET",
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36",
+          "Accept":
+            "application/json,text/plain,*/*"
+        },
+        redirect: "follow"
+      }
+    );
+
+    console.log(
+      "Resposta canais:",
+      streamsResponse.status
+    );
+
+    if (!streamsResponse.ok) {
+      return res.status(502).json({
+        error:
+          `A API não permitiu carregar os canais. HTTP ${streamsResponse.status}.`
+      });
+    }
+
+    const streams =
+      await streamsResponse.json();
+
+    if (!Array.isArray(streams)) {
+      return res.status(400).json({
+        error:
+          "O servidor não retornou uma lista de canais."
+      });
+    }
+
+    if (!streams.length) {
+      return res.status(400).json({
+        error:
+          "Nenhum canal encontrado nessa conta Xtream."
+      });
+    }
+
+    const output = [];
+
+    for (const channel of streams) {
+
+      if (!channel.stream_id) {
+        continue;
+      }
+
+      const streamId =
+        channel.stream_id;
+
+      const name =
+        String(
+          channel.name ||
+          channel.stream_display_name ||
+          "Canal"
+        );
+
+      const category =
+        String(
+          channel.category_name ||
+          "Geral"
+        );
+
+      const logo =
+        String(
+          channel.stream_icon ||
+          ""
+        );
+
+      const url =
+        `${base}/live/${encodeURIComponent(username)}/${encodeURIComponent(password)}/${streamId}.ts`;
+
+      output.push(
+        JSON.stringify({
+          id: id(),
+          name,
+          category,
+          url,
+          logo
+        })
+      );
+    }
+
+    if (!output.length) {
+      return res.status(400).json({
+        error:
+          "Nenhum canal válido foi encontrado."
+      });
+    }
+
+    fs.appendFileSync(
+      IMPORT_FILE,
+      output.join("\n") + "\n",
+      "utf8"
+    );
+
+    console.log(
+      "Canais Xtream importados:",
+      output.length
+    );
+
+    res.json({
+      ok: true,
+      imported: output.length
+    });
+
+  } catch (e) {
+
+    console.error(
+      "Erro no importador Xtream:",
+      e
+    );
+
+    res.status(500).json({
+      error:
+        "Erro ao consultar a API Xtream."
+    });
   }
-);
+});
 
 
 /* =========================
