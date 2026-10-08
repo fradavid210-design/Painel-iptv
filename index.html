@@ -864,7 +864,55 @@ async function carregarTudo(){
 if(token){
   mostrarDashboard();
 }
+if(token){
+    mostrarDashboard();
+}
 
+/* MOSTRAR XTREAM */
+document.addEventListener("DOMContentLoaded", function(){
+
+    const lista = document.getElementById("canaisLista");
+
+    if(!lista) return;
+
+    const boxCanais = lista.closest(".box");
+
+    if(!boxCanais) return;
+
+    const antigo = document.getElementById("xtreamBox");
+
+    if(antigo){
+        antigo.remove();
+    }
+
+    const box = document.createElement("div");
+
+    box.className = "box";
+    box.id = "xtreamBox";
+
+    box.innerHTML = `
+        <h3>📡 Importar Xtream Codes</h3>
+
+        <input id="xtreamServidor"
+               placeholder="Servidor (ex: http://servidor.com:8080)">
+
+        <input id="xtreamUsuario"
+               placeholder="Usuário">
+
+        <input id="xtreamSenha"
+               type="password"
+               placeholder="Senha">
+
+        <button class="add" onclick="importarXtream()">
+            📡 Importar Xtream
+        </button>
+
+        <p id="statusXtream"></p>
+    `;
+
+    boxCanais.parentNode.insertBefore(box, boxCanais);
+
+});
 </script>
 
 </body>
