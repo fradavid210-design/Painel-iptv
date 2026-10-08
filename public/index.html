@@ -576,12 +576,25 @@ async function importarXtream(){
   }
 }
 
-async function copiar(texto){
-  try{
-    await navigator.clipboard.writeText(texto);
-    alert("Link M3U copiado!");
-  }catch(e){
-    alert("Não foi possível copiar o link.");
+function copiar(texto){
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(texto);
+    } else {
+      const campo = document.createElement("textarea");
+      campo.value = texto;
+      campo.style.position = "fixed";
+      campo.style.left = "-9999px";
+      document.body.appendChild(campo);
+      campo.focus();
+      campo.select();
+      document.execCommand("copy");
+      campo.remove();
+    }
+
+    alert("✅ Link M3U copiado!");
+  } catch(e) {
+    alert("❌ Não foi possível copiar o link.");
   }
 }
 
